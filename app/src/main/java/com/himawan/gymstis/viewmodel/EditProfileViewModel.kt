@@ -56,6 +56,7 @@ class EditProfileScreenViewModel(
                     gender = gender.value
                 )
                 userRepository.updateProfile(token, profileEditRequest)
+                userPreferencesRepository.clearUserData()
                 _profileUpdated.value = true
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -63,6 +64,9 @@ class EditProfileScreenViewModel(
         }
     }
 
+    fun resetNavigationTrigger() {
+        _profileUpdated.value = false
+    }
 
 
     companion object {

@@ -1,5 +1,6 @@
 package com.himawan.gymstis.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -9,7 +10,9 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.himawan.gymstis.GymStisApplication
 import com.himawan.gymstis.data.PeminjamanRepository
 import com.himawan.gymstis.data.repositories.UserPreferencesRepository
+import com.himawan.gymstis.model.PeminjamanEditStatus
 import com.himawan.gymstis.model.PeminjamanResponse
+import com.himawan.gymstis.ui.screen.Status
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -19,13 +22,18 @@ class PeminjamanViewModel(
     private val peminjamanRepository: PeminjamanRepository
 ) : ViewModel() {
 
+    private lateinit var token: String
     private val _peminjamanItems = MutableStateFlow<List<PeminjamanResponse>>(emptyList())
     val peminjamanItems = _peminjamanItems.asStateFlow()
 
     init {
         fetchPeminjaman()
+        viewModelScope.launch {
+            userPreferencesRepository.user.collect { user ->
+                token = user.token
+            }
+        }
     }
-
     private fun fetchPeminjaman() {
         viewModelScope.launch {
             try {
@@ -34,6 +42,18 @@ class PeminjamanViewModel(
                     val peminjamanData = peminjamanRepository.getPeminjaman(token)
                     _peminjamanItems.value = peminjamanData
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun updatePeminjamanStatus(peminjamanId: Long, newStatus: Status) {
+        viewModelScope.launch {
+            try {
+                val editStatus = PeminjamanEditStatus(newStatus.name)
+                peminjamanRepository.updateStatusPeminjaman(token, peminjamanId, editStatus)
+                fetchPeminjaman()
             } catch (e: Exception) {
                 e.printStackTrace()
             }

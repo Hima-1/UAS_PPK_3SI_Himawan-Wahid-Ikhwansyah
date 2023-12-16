@@ -13,22 +13,34 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.himawan.gymstis.viewmodel.PeminjamanViewModel
 
 
 data class PeminjamanItem(
+    val id: Long,
     val gender: Gender,
     val dayName: String,
     val date: String,
-    val quota: Int,
+    val quota: String,
     val status: String
 )
 
+enum class Status(
+    val value: String
+) {
+    PENDING("PENDING"),
+    APPROVED("APPROVED"),
+    DENIED("DENIED")
+}
 
 @Composable
 fun PeminjamanScreen(
@@ -41,13 +53,15 @@ fun PeminjamanScreen(
         items(peminjamanItems) { item ->
             PeminjamanItemRow(
                 item = PeminjamanItem(
+                    id = item.id,
                     gender = item.gender,
                     dayName = item.dayName,
-                    date = item.date.toString(), // Format the date as needed
-                    quota = item.kuota,
+                    date = item.date.toString(),
+                    quota = "${item.peminjam}/${item.kuota}",
                     status = item.status
                 ),
-                isStaff = isStaff
+                isStaff = isStaff,
+                viewModel = peminjamanViewModel
             )
             Divider()
         }
@@ -55,7 +69,8 @@ fun PeminjamanScreen(
 }
 
 @Composable
-fun PeminjamanItemRow(item: PeminjamanItem, isStaff: Boolean) {
+fun PeminjamanItemRow(item: PeminjamanItem, isStaff: Boolean, viewModel: PeminjamanViewModel) {
+    var currentStatus by remember { mutableStateOf(item.status) }
     ListItem(
         headlineContent = { Text("${item.dayName} (${item.date})") },
         leadingContent = {
@@ -64,18 +79,38 @@ fun PeminjamanItemRow(item: PeminjamanItem, isStaff: Boolean) {
                 contentDescription = if (item.gender == Gender.MALE) "Laki-laki" else "Perempuan"
             )
         },
-        supportingContent = { Text("Kuota: ${item.quota}/10") },
+        supportingContent = { Text("Kuota: ${item.quota}") },
         trailingContent = {
-            if(isStaff){
+            if (isStaff) {
                 Row {
-                    IconButton(onClick = { /* TODO: Implement Approve action */ }) {
-                        Icon(Icons.Default.CheckCircle, contentDescription = "Approve")
+                    IconButton(
+                        onClick = {
+                            viewModel.updatePeminjamanStatus(item.id, Status.APPROVED)
+                            currentStatus = Status.APPROVED.value
+                        },
+                        enabled = currentStatus != Status.APPROVED.value
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.CheckCircle,
+                            contentDescription = "Approve",
+                            tint = if (currentStatus == Status.APPROVED.value) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                        )
                     }
-                    IconButton(onClick = { /* TODO: Implement Deny action */ }) {
-                        Icon(Icons.Default.Cancel, contentDescription = "Deny")
+                    IconButton(
+                        onClick = {
+                            viewModel.updatePeminjamanStatus(item.id, Status.DENIED)
+                            currentStatus = Status.DENIED.value
+                        },
+                        enabled = currentStatus != Status.DENIED.value
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Cancel,
+                            contentDescription = "Deny",
+                            tint = if (currentStatus == Status.DENIED.value) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                        )
                     }
                 }
-            } else{
+            } else {
                 when (item.status) {
                     "PENDING" -> Icon(Icons.Default.Info, contentDescription = "Pending")
                     "APPROVED" -> Icon(Icons.Default.CheckCircle, contentDescription = "Approved")

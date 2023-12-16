@@ -3,7 +3,6 @@ package com.himawan.gymstis.viewmodel
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.himawan.gymstis.GymStisApplication
@@ -12,14 +11,13 @@ import com.himawan.gymstis.model.RegisterForm
 import com.himawan.gymstis.ui.screen.Gender
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 
 class RegisterViewModel(private val userRepository: UserRepository) : ViewModel() {
 
     var name = mutableStateOf("")
     var email = mutableStateOf("")
     var password = mutableStateOf("")
-    var gender = mutableStateOf<Gender>(Gender.MALE)
+    var gender = mutableStateOf(Gender.MALE)
     var passwordVisibility = mutableStateOf(false)
 
     private val _registerResult = MutableStateFlow<RegisterResult?>(null)
@@ -67,8 +65,11 @@ class RegisterViewModel(private val userRepository: UserRepository) : ViewModel(
     private fun validateInputs(): Boolean {
         return name.value.isNotBlank() &&
                 email.value.isNotBlank() &&
-                password.value.isNotBlank() &&
-                gender.value != null
+                password.value.isNotBlank()
+    }
+
+    fun resetRegisterResult() {
+        _registerResult.value = null
     }
 
     companion object {
@@ -86,6 +87,5 @@ class RegisterViewModel(private val userRepository: UserRepository) : ViewModel(
 enum class RegisterResult {
     Success,
     EmptyField,
-    PasswordMismatch,
     NetworkError
 }

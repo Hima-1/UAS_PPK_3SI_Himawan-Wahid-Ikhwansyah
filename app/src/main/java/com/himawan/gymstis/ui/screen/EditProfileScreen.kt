@@ -32,7 +32,10 @@ fun EditProfileScreen(
     val profileUpdated by editProfileScreenViewModel.profileUpdated.collectAsState()
 
     if (profileUpdated) {
-        navController.navigate(Screen.User.route)
+        navController.navigate("login"){
+            popUpTo("login") { inclusive = true}
+        }
+        editProfileScreenViewModel.resetNavigationTrigger()
     }
 
     Column(

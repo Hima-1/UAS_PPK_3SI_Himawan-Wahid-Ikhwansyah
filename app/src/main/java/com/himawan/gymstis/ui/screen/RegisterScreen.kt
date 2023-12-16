@@ -1,5 +1,6 @@
 package com.himawan.gymstis.ui.screen
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,6 +19,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -46,6 +48,17 @@ fun RegisterScreen(
     val password by registerViewModel.password
     val gender by registerViewModel.gender
     val passwordVisibility by registerViewModel.passwordVisibility
+    val registerResult by registerViewModel.registerResult.collectAsState()
+
+    LaunchedEffect(registerResult) {
+        if (registerResult == RegisterResult.Success) {
+            Log.d("RegisterScreen", "Register Success")
+            navController.navigate("login") {
+                popUpTo("login") { inclusive = true }
+            }
+            registerViewModel.resetRegisterResult()
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -108,11 +121,6 @@ fun RegisterScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(text = "Register")
-        }
-
-        val registerResult by registerViewModel.registerResult.collectAsState()
-        if (registerResult == RegisterResult.Success) {
-            navController.navigate("login")
         }
 
         Spacer(modifier = Modifier.height(16.dp))

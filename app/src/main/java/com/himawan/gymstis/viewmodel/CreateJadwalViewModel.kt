@@ -20,8 +20,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-private const val TAG = "CreateJadwalViewModel"
-
 class CreateJadwalViewModel(
     private val userPreferencesRepository: UserPreferencesRepository,
     private val jadwalRepository: JadwalRepository
@@ -55,9 +53,12 @@ class CreateJadwalViewModel(
             }
             CreateJadwalResult.Success
         } catch (e: Exception) {
-            Log.e(TAG, "Exception: ${e.message}")
             CreateJadwalResult.Error
         }
+    }
+
+    fun resetNavigationTrigger() {
+        _navigateToJadwal.value = false
     }
 
     fun updateDate(newDate: LocalDate) {

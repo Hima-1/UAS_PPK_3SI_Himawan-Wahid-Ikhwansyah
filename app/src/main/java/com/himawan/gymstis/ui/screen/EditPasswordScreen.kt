@@ -29,7 +29,10 @@ fun EditPasswordScreen(
     val navigateToProfile by editPasswordViewModel.navigateToProfile.collectAsState()
 
     if (navigateToProfile) {
-        navController.navigate(Screen.User.route)
+        navController.navigate("login") {
+            popUpTo("login") { inclusive = true}
+        }
+        editPasswordViewModel.resetNavigationTrigger()
     }
 
     Column(

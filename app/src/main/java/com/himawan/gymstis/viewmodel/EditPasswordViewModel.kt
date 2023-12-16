@@ -25,8 +25,8 @@ class EditPasswordViewModel(
     var newPassword by mutableStateOf("")
 
     private lateinit var token: String
-    private val _navigateToProfile = MutableStateFlow(false)
-    val navigateToProfile = _navigateToProfile.asStateFlow()
+    private val _navigateToLogin = MutableStateFlow(false)
+    val navigateToProfile = _navigateToLogin.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -44,11 +44,17 @@ class EditPasswordViewModel(
         viewModelScope.launch {
             try {
                 userRepository.updatePassword(token, PasswordChangeRequest(newPassword))
-                _navigateToProfile.value = true
+                userPreferencesRepository.clearUserData()
+                _navigateToLogin.value = true
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
+    }
+
+
+    fun resetNavigationTrigger() {
+        _navigateToLogin.value = false
     }
 
     companion object {

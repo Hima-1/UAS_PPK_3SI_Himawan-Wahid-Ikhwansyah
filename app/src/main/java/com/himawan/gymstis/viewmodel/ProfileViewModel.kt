@@ -19,11 +19,20 @@ class ProfileViewModel(
     private val userRepository: UserRepository
 ) : ViewModel() {
 
+    private lateinit var token: String
     private val _profile = MutableStateFlow<ProfileResponse?>(null)
     val profile = _profile.asStateFlow()
 
     init {
         fetchUserProfile()
+    }
+
+    init {
+        viewModelScope.launch {
+            userPreferencesRepository.user.collect { user ->
+                token = user.token
+            }
+        }
     }
 
     private fun fetchUserProfile() {
@@ -33,11 +42,25 @@ class ProfileViewModel(
                     val profileResponse = userRepository.getProfile(user.token)
                     _profile.value = profileResponse
                 } catch (e: Exception) {
-                    e.printStackTrace() // Handle the exception as needed
+                    e.printStackTrace()
                 }
             }
         }
     }
+
+    fun logout() {
+        viewModelScope.launch {
+            userPreferencesRepository.clearUserData()
+        }
+    }
+
+    fun deleteAccount() {
+        viewModelScope.launch {
+            userRepository.deleteProfile(token)
+            userPreferencesRepository.clearUserData()
+        }
+    }
+
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {

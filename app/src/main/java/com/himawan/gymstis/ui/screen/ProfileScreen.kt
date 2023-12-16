@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Female
@@ -55,7 +56,6 @@ fun ProfileScreen(
     ) {
         Spacer(modifier = Modifier.height(50.dp))
 
-        // User icon and details
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
@@ -84,7 +84,7 @@ fun ProfileScreen(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = if (userProfile.roles.contains("Staff")) "Staff" else "User",
+                    text = if (userProfile.roles.contains("ROLE_STAFF")) "Staff" else "User",
                     style = MaterialTheme.typography.bodyLarge
                 )
             }
@@ -109,11 +109,15 @@ fun ProfileScreen(
                     navController.navigate("changePassword")
                 }
                 OptionItem(Icons.Default.ExitToApp, "Logout") {
-
+                    profileViewModel.logout()
+                    navController.navigate("login") {
+                        popUpTo("login") { inclusive = true }
+                    }
                 }
-                if (isStaff) {
-                    OptionItem(Icons.Default.Person, "Manage Users") {
-                        navController.navigate("manageUser")
+                OptionItem(Icons.Default.Delete, "Delete Account") {
+                    profileViewModel.deleteAccount()
+                    navController.navigate("login") {
+                        popUpTo("login") { inclusive = true }
                     }
                 }
             }

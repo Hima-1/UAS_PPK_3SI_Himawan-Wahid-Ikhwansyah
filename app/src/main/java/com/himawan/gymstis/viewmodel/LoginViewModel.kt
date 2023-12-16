@@ -47,6 +47,11 @@ class LoginViewModel(
             LoginResult.WrongEmailOrPassword
         }
     }
+
+    fun resetLoginResult() {
+        _loginResult.value = null
+    }
+
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {

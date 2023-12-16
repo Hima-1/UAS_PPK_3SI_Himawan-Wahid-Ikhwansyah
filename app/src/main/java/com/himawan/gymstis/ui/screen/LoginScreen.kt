@@ -31,7 +31,14 @@ fun LoginScreen(
 ){
     val coroutineScope = rememberCoroutineScope()
     var passwordVisibility by remember { mutableStateOf(false) }
+    val loginResult by loginViewModel.loginResult.collectAsState()
 
+    if (loginResult == LoginResult.Success) {
+        navController.navigate("jadwal"){
+            popUpTo("jadwal") { inclusive = true}
+        }
+        loginViewModel.resetLoginResult()
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -81,11 +88,6 @@ fun LoginScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(text = "Login")
-        }
-
-        val loginResult by loginViewModel.loginResult.collectAsState()
-        if (loginResult == LoginResult.Success) {
-            navController.navigate("jadwal")
         }
 
         Spacer(modifier = Modifier.height(16.dp))

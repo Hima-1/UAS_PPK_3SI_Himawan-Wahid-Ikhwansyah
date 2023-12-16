@@ -14,19 +14,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.himawan.gymstis.viewmodel.JadwalViewModel
 
 data class JadwalItem(
     val gender: String,
     val dayName: String,
     val date: String,
-    val quota: Int
+    val quota: String
     // Add any other relevant fields
 )
 
 @Composable
 fun JadwalScreen(
     isStaff: Boolean,
+    navController: NavHostController,
     jadwalViewModel: JadwalViewModel = viewModel(factory = JadwalViewModel.Factory)
 ) {
     val jadwals by jadwalViewModel.jadwals.collectAsState()
@@ -38,17 +40,23 @@ fun JadwalScreen(
                     gender = jadwal.gender,
                     dayName = jadwal.hari,
                     date = jadwal.date.toString(), // Format the date as needed
-                    quota = jadwal.kuota
+                    quota = "${jadwal.peminjam}/${jadwal.kuota}"
                 ),
-                isStaff = isStaff
-            )
+                isStaff = isStaff,
+                onDeleteClick = { jadwalViewModel.deleteJadwal(jadwal.id) }
+            ) { jadwalViewModel.applyForJadwal(jadwal.id, jadwal.date) }
             Divider()
         }
     }
 }
 
 @Composable
-fun JadwalItemRow(item: JadwalItem, isStaff: Boolean) {
+fun JadwalItemRow(
+    item: JadwalItem,
+    isStaff: Boolean,
+    onDeleteClick: () -> Unit,
+    onApplyClick: () -> Unit
+) {
     ListItem(
         headlineContent = { Text("${item.dayName} (${item.date})") },
         leadingContent = {
@@ -59,15 +67,15 @@ fun JadwalItemRow(item: JadwalItem, isStaff: Boolean) {
         },
         trailingContent = {
             if (isStaff) {
-                Button(onClick = { /* TODO: Implement Edit action */ }) {
+                Button(onClick = onDeleteClick) {
                     Text("Hapus")
                 }
             } else {
-                Button(onClick = { /* TODO: Implement Apply action */ }) {
+                Button(onClick = onApplyClick) {
                     Text("Apply")
                 }
             }
         },
-        supportingContent = { Text("Kuota: ${item.quota}/10") }
+        supportingContent = { Text("Kuota: ${item.quota}") }
     )
 }

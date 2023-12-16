@@ -53,23 +53,19 @@ fun GymStisApp(
         }
     }
     val currentRoute = navBackStackEntry?.destination?.route
+    val startDestination = if (loggedInUser.token.isNotEmpty()) "jadwal" else "login"
 
     Scaffold(
         bottomBar = {
-            BottomNavigationBar(navController, selectedItem) { selectedIndex ->
-                selectedItem = selectedIndex
-                navController.navigate(Screen.values()[selectedIndex].route) {
-                    popUpTo(navController.graph.startDestinationId)
-                    launchSingleTop = true
+            if (loggedInUser.token.isNotEmpty()) {
+                    BottomNavigationBar(navController, selectedItem) { selectedIndex ->
+                        selectedItem = selectedIndex
+                        navController.navigate(Screen.values()[selectedIndex].route) {
+                            popUpTo(navController.graph.startDestinationId)
+                            launchSingleTop = true
+                        }
+                    }
                 }
-            }
-            BottomNavigationBar(navController, selectedItem) { selectedIndex ->
-                selectedItem = selectedIndex
-                navController.navigate(Screen.values()[selectedIndex].route) {
-                    popUpTo(navController.graph.startDestinationId)
-                    launchSingleTop = true
-                }
-            }
         },
         floatingActionButton = {
             if (isStaff && navBackStackEntry?.destination?.route == Screen.Jadwal.route) {
@@ -85,12 +81,12 @@ fun GymStisApp(
     ) { innerPadding ->
         NavHost(
             navController,
-            startDestination = "login",
+            startDestination = startDestination,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable("login") { LoginScreen(navController) }
             composable("register") { RegisterScreen(navController) }
-            composable(Screen.Jadwal.route) { JadwalScreen(isStaff) }
+            composable(Screen.Jadwal.route) { JadwalScreen(isStaff, navController) }
             composable(Screen.Peminjaman.route) { PeminjamanScreen(isStaff) }
             composable(Screen.User.route) { ProfileScreen(navController, isStaff) }
             composable("changeProfile") { EditProfileScreen(navController) }

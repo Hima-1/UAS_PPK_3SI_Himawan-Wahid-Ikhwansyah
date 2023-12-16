@@ -46,13 +46,16 @@ fun CreateJadwalScreen(
     val navigateToJadwal by createJadwalViewModel.navigateToJadwal.collectAsState()
 
     if (navigateToJadwal) {
-        navController.navigate(Screen.Jadwal.route)
+        navController.navigate(Screen.Jadwal.route) {
+            popUpTo(Screen.Jadwal.route) { inclusive = true }
+        }
+        createJadwalViewModel.resetNavigationTrigger()
     }
 
     var selectedDateMillis by remember { mutableStateOf(System.currentTimeMillis()) }
     var gender by remember { mutableStateOf(createJadwalViewModel.gender) }
     var kuota by remember { mutableStateOf(createJadwalViewModel.kuota) }
-    
+
     Column(
         modifier = Modifier
             .fillMaxSize()

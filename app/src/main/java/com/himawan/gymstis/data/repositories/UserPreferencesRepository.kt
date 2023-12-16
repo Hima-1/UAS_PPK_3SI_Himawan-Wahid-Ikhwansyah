@@ -71,6 +71,14 @@ class UserPreferencesRepository (
             preferences[GENDER] = gender
         }
     }
+    suspend fun clearUserData() {
+        dataStore.edit { preferences ->
+            preferences[TOKEN] = ""
+            preferences[EMAIL] = ""
+            preferences[GENDER] = ""
+            preferences[IS_STAFF] = false
+        }
+    }
 }
 
 data class UserState(
