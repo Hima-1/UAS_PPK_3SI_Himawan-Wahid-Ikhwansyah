@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -51,7 +52,7 @@ fun CreateJadwalScreen(
         createJadwalViewModel.resetNavigationTrigger()
     }
 
-    var selectedDateMillis by remember { mutableStateOf(System.currentTimeMillis()) }
+    var selectedDateMillis by remember { mutableLongStateOf(System.currentTimeMillis()) }
     var gender by remember { mutableStateOf(createJadwalViewModel.gender) }
     var kuota by remember { mutableStateOf(createJadwalViewModel.kuota) }
 
@@ -71,7 +72,7 @@ fun CreateJadwalScreen(
         )
         Spacer(modifier = Modifier.height(24.dp))
 
-        var selectedDateMillis by remember { mutableStateOf(System.currentTimeMillis()) }
+        val selectedDateMillis by remember { mutableLongStateOf(System.currentTimeMillis()) }
         DatePickerButton(context, selectedDateMillis) { newDateMillis ->
             val newDate =
                 Instant.ofEpochMilli(newDateMillis).atZone(ZoneId.systemDefault()).toLocalDate()

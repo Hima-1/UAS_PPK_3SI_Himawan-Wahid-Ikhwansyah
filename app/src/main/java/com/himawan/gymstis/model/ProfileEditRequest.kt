@@ -1,7 +1,6 @@
 package com.himawan.gymstis.model
 
 import com.himawan.gymstis.ui.screen.Gender
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.serialization.Serializable
 
 @Serializable

@@ -20,7 +20,7 @@ class EditProfileScreenViewModel(
 ) : ViewModel() {
     var email = MutableStateFlow("")
     var name = MutableStateFlow("")
-    var gender = MutableStateFlow<Gender>(Gender.MALE)
+    var gender = MutableStateFlow(Gender.MALE)
 
     private val _profileUpdated = MutableStateFlow(false)
     val profileUpdated = _profileUpdated.asStateFlow()

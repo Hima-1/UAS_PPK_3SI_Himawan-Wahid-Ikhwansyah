@@ -10,7 +10,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.himawan.gymstis.GymStisApplication
-import com.himawan.gymstis.api.JadwalRepository
+import com.himawan.gymstis.repositories.JadwalRepository
 import com.himawan.gymstis.repositories.UserPreferencesRepository
 import com.himawan.gymstis.model.JadwalForm
 import com.himawan.gymstis.ui.screen.Gender
@@ -24,7 +24,7 @@ class CreateJadwalViewModel(
     private val jadwalRepository: JadwalRepository
 ) : ViewModel() {
     private lateinit var token: String
-    var selectedDate by mutableStateOf(LocalDate.now())
+    private var selectedDate: LocalDate? by mutableStateOf(LocalDate.now())
     var gender by mutableStateOf(Gender.MALE)
     var kuota by mutableStateOf("")
 

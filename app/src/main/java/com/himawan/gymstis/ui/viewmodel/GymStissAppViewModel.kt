@@ -23,7 +23,6 @@ class GymStisAppViewModel(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(GymStisApplication())
-    val uiState: StateFlow<GymStisApplication> = _uiState.asStateFlow()
 
     val userState: StateFlow<UserState> = userPreferencesRepository.user.map { user ->
         user

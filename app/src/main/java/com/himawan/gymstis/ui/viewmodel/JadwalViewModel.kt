@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.himawan.gymstis.GymStisApplication
-import com.himawan.gymstis.api.JadwalRepository
+import com.himawan.gymstis.repositories.JadwalRepository
 import com.himawan.gymstis.repositories.PeminjamanRepository
 import com.himawan.gymstis.repositories.UserPreferencesRepository
 import com.himawan.gymstis.model.JadwalResponse
@@ -37,7 +37,7 @@ class JadwalViewModel(
         }
     }
 
-    fun refreshJadwals() {
+    private fun refreshJadwals() {
         viewModelScope.launch {
             try {
                 val jadwalList = jadwalRepository.getAvailableJadwals(token)

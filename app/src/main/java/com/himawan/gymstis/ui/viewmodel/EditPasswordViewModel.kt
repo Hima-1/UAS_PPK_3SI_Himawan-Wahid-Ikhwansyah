@@ -36,11 +36,7 @@ class EditPasswordViewModel(
         }
     }
 
-    fun updateNewPassword(newPassword: String) {
-        this.newPassword = newPassword
-    }
-
-    fun validateInputs(): Boolean {
+    private fun validateInputs(): Boolean {
         return newPassword.isNotBlank()
     }
 
