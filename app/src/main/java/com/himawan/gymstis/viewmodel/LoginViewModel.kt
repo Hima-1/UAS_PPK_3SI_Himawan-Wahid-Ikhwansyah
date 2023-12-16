@@ -1,6 +1,5 @@
 package com.himawan.gymstis.viewmodel
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,65 +9,43 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.himawan.gymstis.GymStisApplication
 import com.himawan.gymstis.data.UserRepository
-import com.himawan.gymstis.data.repositories.AuthRepository
+import com.himawan.gymstis.data.repositories.UserPreferencesRepository
 import com.himawan.gymstis.model.AuthRequest
-import retrofit2.HttpException
-
-private const val TAG = "LoginViewModel"
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import java.io.IOException
 
 class LoginViewModel(
-    private val authRepository: AuthRepository,
+    private val userPreferencesRepository: UserPreferencesRepository,
     private val userRepository: UserRepository
 ) : ViewModel() {
 
-    var emailField by mutableStateOf("")
-        private set
-
-    var passwordField by mutableStateOf("")
-        private set
+    var email by mutableStateOf("")
+    var password by mutableStateOf("")
 
     fun updateEmail(email: String) {
-        emailField = email
+        this.email = email
     }
-
     fun updatePassword(password: String) {
-        passwordField = password
+        this.password = password
     }
 
-    suspend fun attemptLogin(): LoginResult {
-        try {
-            val authRequest = AuthRequest(emailField, passwordField)
-            val loginResponse = userRepository.login(authRequest)
-            Log.d(TAG, "accessToken: ${loginResponse.accessToken}")
+    private val _loginResult = MutableStateFlow<LoginResult?>(null)
+    val loginResult = _loginResult.asStateFlow()
 
-            authRepository.saveToken(loginResponse.accessToken)
-            authRepository.saveEmail(loginResponse.email)
-            authRepository.saveIsAdmin(loginResponse.roles.contains("ROLE_ADMIN"))
-            authRepository.saveGender(loginResponse.gender)
-
-        } catch (e: HttpException) {
-            return when (e.code()) {
-                400 -> {
-                    Log.d(TAG, "bad input")
-                    LoginResult.BadInput
-                }
-
-                401 -> {
-                    Log.d(TAG, "Wrong email or password")
-                    LoginResult.WrongEmailOrPassword
-                }
-
-                else -> {
-                    Log.e(TAG, "Http exception: (${e.javaClass}) ${e.message}")
-                    LoginResult.NetworkError
-                }
-            }
+    suspend fun login() {
+        _loginResult.value = try {
+            val loginResponse = userRepository.login(AuthRequest(email, password))
+            userPreferencesRepository.saveToken(loginResponse.accessToken)
+            userPreferencesRepository.saveEmail(loginResponse.email)
+            userPreferencesRepository.saveGender(loginResponse.gender)
+            userPreferencesRepository.saveIsStaff(loginResponse.roles.contains("ROLE_STAFF"))
+            LoginResult.Success
+        } catch (e: IOException) {
+            LoginResult.NetworkError
         } catch (e: Exception) {
-            Log.e(TAG, "Can't login: (${e.javaClass}) ${e.message}")
-            return LoginResult.NetworkError
+            LoginResult.WrongEmailOrPassword
         }
-
-        return LoginResult.Success
     }
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
@@ -76,7 +53,7 @@ class LoginViewModel(
                 val application = (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as GymStisApplication)
                 val userRepository = application.container.userRepository
                 LoginViewModel(
-                    authRepository = application.authRepository,
+                    userPreferencesRepository = application.userPreferenceRepository,
                     userRepository = userRepository
                 )
             }
@@ -86,7 +63,6 @@ class LoginViewModel(
 
 enum class LoginResult {
     Success,
-    BadInput,
     WrongEmailOrPassword,
     NetworkError
 }

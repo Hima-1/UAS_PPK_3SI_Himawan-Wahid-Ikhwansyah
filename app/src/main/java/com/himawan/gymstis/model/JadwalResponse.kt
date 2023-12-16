@@ -6,6 +6,7 @@ import java.time.LocalDate
 
 @Serializable
 data class JadwalResponse(
+    val id: Long,
     val hari: String,
     @Contextual val date: LocalDate,
     val gender: String,

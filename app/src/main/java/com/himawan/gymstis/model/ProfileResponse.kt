@@ -1,13 +1,12 @@
 package com.himawan.gymstis.model
 
 import com.himawan.gymstis.ui.screen.Gender
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
-import java.time.LocalDate
 
 @Serializable
-data class JadwalForm(
-    @Contextual val date: LocalDate,
+data class ProfileResponse (
+    val name: String,
+    val email: String,
     val gender: Gender,
-    val kuota: Int
+    val roles: List<String>
 )

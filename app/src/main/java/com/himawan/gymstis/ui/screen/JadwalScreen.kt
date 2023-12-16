@@ -11,7 +11,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.himawan.gymstis.viewmodel.JadwalViewModel
 
 data class JadwalItem(
     val gender: String,
@@ -22,16 +25,23 @@ data class JadwalItem(
 )
 
 @Composable
-fun JadwalScreen(isStaff: Boolean) {
-    val items = listOf(
-        JadwalItem("MALE", "Senin", "12 Des 2023", 7),
-        JadwalItem("FEMALE", "Selasa", "13 Des 2023", 5),
-        // Add more items...
-    )
+fun JadwalScreen(
+    isStaff: Boolean,
+    jadwalViewModel: JadwalViewModel = viewModel(factory = JadwalViewModel.Factory)
+) {
+    val jadwals by jadwalViewModel.jadwals.collectAsState()
 
     LazyColumn {
-        items(items) { item ->
-            JadwalItemRow(item, isStaff)
+        items(jadwals) { jadwal ->
+            JadwalItemRow(
+                item = JadwalItem(
+                    gender = jadwal.gender,
+                    dayName = jadwal.hari,
+                    date = jadwal.date.toString(), // Format the date as needed
+                    quota = jadwal.kuota
+                ),
+                isStaff = isStaff
+            )
             Divider()
         }
     }

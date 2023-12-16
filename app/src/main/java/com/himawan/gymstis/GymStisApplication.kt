@@ -7,7 +7,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.himawan.gymstis.data.AppContainer
 import com.himawan.gymstis.data.DefaultAppContainer
-import com.himawan.gymstis.data.repositories.AuthRepository
+import com.himawan.gymstis.data.repositories.UserPreferencesRepository
 import com.himawan.gymstis.service.UserService
 
 private const val LOGGED_IN_USER_PREFERENCE_NAME = "logged_in_user_preference"
@@ -17,11 +17,11 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
 
 class GymStisApplication : Application() {
     lateinit var container: AppContainer
-    lateinit var authRepository: AuthRepository
+    lateinit var userPreferenceRepository: UserPreferencesRepository
 
     override fun onCreate() {
         super.onCreate()
         container = DefaultAppContainer()
-        authRepository = AuthRepository(dataStore)
+        userPreferenceRepository = UserPreferencesRepository(dataStore)
     }
 }

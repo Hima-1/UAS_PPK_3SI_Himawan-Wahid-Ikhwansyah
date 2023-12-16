@@ -15,10 +15,14 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.himawan.gymstis.viewmodel.PeminjamanViewModel
 
 
 data class PeminjamanItem(
-    val gender: String,
+    val gender: Gender,
     val dayName: String,
     val date: String,
     val quota: Int,
@@ -27,32 +31,28 @@ data class PeminjamanItem(
 
 
 @Composable
-fun PeminjamanScreen(isStaff: Boolean = true) {
-    // Sample data
-    val items = listOf(
-        PeminjamanItem("MALE", "Senin", "12 Des 2023", 7, "PENDING"),
-        PeminjamanItem("FEMALE", "Selasa", "13 Des 2023", 5, "APPROVED"),
-        PeminjamanItem("MALE", "Rabu", "14 Des 2023", 3, "PENDING"),
-        PeminjamanItem("FEMALE", "Kamis", "15 Des 2023", 4, "APPROVED"),
-        PeminjamanItem("MALE", "Jumat", "16 Des 2023", 6, "PENDING"),
-        PeminjamanItem("FEMALE", "Sabtu", "17 Des 2023", 2, "APPROVED"),
-        PeminjamanItem("MALE", "Minggu", "18 Des 2023", 8, "PENDING"),
-        PeminjamanItem("FEMALE", "Senin", "19 Des 2023", 5, "APPROVED"),
-        PeminjamanItem("MALE", "Selasa", "20 Des 2023", 3, "PENDING"),
-        PeminjamanItem("FEMALE", "Rabu", "21 Des 2023", 7, "APPROVED"),
-        PeminjamanItem("MALE", "Kamis", "22 Des 2023", 4, "PENDING"),
-        // Add 10 more items here...
-    )
+fun PeminjamanScreen(
+    isStaff: Boolean = true,
+    peminjamanViewModel: PeminjamanViewModel = viewModel(factory = PeminjamanViewModel.Factory)
+) {
+    val peminjamanItems by peminjamanViewModel.peminjamanItems.collectAsState()
 
     LazyColumn {
-        items(items) { item ->
-            PeminjamanItemRow(item, isStaff)
+        items(peminjamanItems) { item ->
+            PeminjamanItemRow(
+                item = PeminjamanItem(
+                    gender = item.gender,
+                    dayName = item.dayName,
+                    date = item.date.toString(), // Format the date as needed
+                    quota = item.kuota,
+                    status = item.status
+                ),
+                isStaff = isStaff
+            )
             Divider()
         }
     }
 }
-
-// Now, the 'items' list contains 12 'PeminjamanItem' objects.
 
 @Composable
 fun PeminjamanItemRow(item: PeminjamanItem, isStaff: Boolean) {
@@ -60,8 +60,8 @@ fun PeminjamanItemRow(item: PeminjamanItem, isStaff: Boolean) {
         headlineContent = { Text("${item.dayName} (${item.date})") },
         leadingContent = {
             Icon(
-                imageVector = if (item.gender == "MALE") Icons.Default.Male else Icons.Default.Female,
-                contentDescription = if (item.gender == "MALE") "Laki-laki" else "Perempuan"
+                imageVector = if (item.gender == Gender.MALE) Icons.Default.Male else Icons.Default.Female,
+                contentDescription = if (item.gender == Gender.MALE) "Laki-laki" else "Perempuan"
             )
         },
         supportingContent = { Text("Kuota: ${item.quota}/10") },

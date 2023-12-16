@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 
-class AuthRepository (
+class UserPreferencesRepository (
     private val dataStore: DataStore<Preferences>
 ) {
     private companion object {
@@ -21,7 +21,7 @@ class AuthRepository (
         val EMAIL = stringPreferencesKey("user_email")
         val GENDER = stringPreferencesKey("user_gender")
         val IS_STAFF = booleanPreferencesKey("user_is_staff")
-        const val TAG = "AuthRepository"
+        const val TAG = "UserPreferencesRepository"
     }
 
     val user: Flow<UserState> = dataStore.data
@@ -60,9 +60,9 @@ class AuthRepository (
         }
     }
 
-    suspend fun saveIsAdmin(isAdmin: Boolean) {
+    suspend fun saveIsStaff(isStaff: Boolean) {
         dataStore.edit { preferences ->
-            preferences[IS_STAFF] = isAdmin
+            preferences[IS_STAFF] = isStaff
         }
     }
 
@@ -78,5 +78,5 @@ data class UserState(
     val name: String,
     val email: String,
     val gender: String,
-    val isAdmin: Boolean
+    val isStaff: Boolean
 )
