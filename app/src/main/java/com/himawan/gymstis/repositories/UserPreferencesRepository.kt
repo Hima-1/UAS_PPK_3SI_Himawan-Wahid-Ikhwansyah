@@ -1,4 +1,4 @@
-package com.himawan.gymstis.data.repositories
+package com.himawan.gymstis.repositories
 
 import android.util.Log
 import androidx.datastore.core.DataStore
@@ -46,11 +46,6 @@ class UserPreferencesRepository (
     suspend fun saveToken(token: String) {
         dataStore.edit { preferences ->
             preferences[TOKEN] = token
-        }
-    }
-    suspend fun saveName(name: String) {
-        dataStore.edit { preferences ->
-            preferences[NAME] = name
         }
     }
 

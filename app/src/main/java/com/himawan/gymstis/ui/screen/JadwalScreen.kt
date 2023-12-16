@@ -15,14 +15,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.himawan.gymstis.viewmodel.JadwalViewModel
+import com.himawan.gymstis.ui.viewmodel.JadwalViewModel
 
 data class JadwalItem(
     val gender: String,
     val dayName: String,
     val date: String,
     val quota: String
-    // Add any other relevant fields
 )
 
 @Composable
@@ -39,7 +38,7 @@ fun JadwalScreen(
                 item = JadwalItem(
                     gender = jadwal.gender,
                     dayName = jadwal.hari,
-                    date = jadwal.date.toString(), // Format the date as needed
+                    date = jadwal.date.toString(),
                     quota = "${jadwal.peminjam}/${jadwal.kuota}"
                 ),
                 isStaff = isStaff,

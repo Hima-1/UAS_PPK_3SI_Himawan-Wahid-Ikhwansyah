@@ -1,6 +1,5 @@
-package com.himawan.gymstis.ui
+package com.himawan.gymstis.ui.screen
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -11,29 +10,22 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.himawan.gymstis.ui.viewmodel.GymStisAppViewModel
 import com.himawan.gymstis.ui.component.BottomNavigationBar
-import com.himawan.gymstis.ui.screen.EditPasswordScreen
-import com.himawan.gymstis.ui.screen.EditProfileScreen
-import com.himawan.gymstis.ui.screen.CreateJadwalScreen
-import com.himawan.gymstis.ui.screen.JadwalScreen
-import com.himawan.gymstis.ui.screen.LoginScreen
-import com.himawan.gymstis.ui.screen.PeminjamanScreen
-import com.himawan.gymstis.ui.screen.RegisterScreen
-import com.himawan.gymstis.ui.screen.ProfileScreen
+import kotlinx.serialization.ExperimentalSerializationApi
 
+@ExperimentalSerializationApi
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GymStisApp(
@@ -52,7 +44,6 @@ fun GymStisApp(
             }
         }
     }
-    val currentRoute = navBackStackEntry?.destination?.route
     val startDestination = if (loggedInUser.token.isNotEmpty()) "jadwal" else "login"
 
     Scaffold(

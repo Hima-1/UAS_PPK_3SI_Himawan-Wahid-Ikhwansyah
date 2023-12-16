@@ -1,4 +1,4 @@
-package com.himawan.gymstis.service
+package com.himawan.gymstis.api.service
 
 import com.himawan.gymstis.model.PeminjamanEditStatus
 import com.himawan.gymstis.model.PeminjamanRequest

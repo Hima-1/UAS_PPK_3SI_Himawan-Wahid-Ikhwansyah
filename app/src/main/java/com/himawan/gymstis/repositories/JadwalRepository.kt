@@ -1,8 +1,8 @@
-package com.himawan.gymstis.data
+package com.himawan.gymstis.api
 
 import com.himawan.gymstis.model.JadwalForm
 import com.himawan.gymstis.model.JadwalResponse
-import com.himawan.gymstis.service.JadwalService
+import com.himawan.gymstis.api.service.JadwalService
 
 class JadwalRepository(private val jadwalService: JadwalService) {
     suspend fun createJadwal(token: String, jadwalForm: JadwalForm): JadwalResponse = jadwalService.createJadwal("Bearer $token", jadwalForm)

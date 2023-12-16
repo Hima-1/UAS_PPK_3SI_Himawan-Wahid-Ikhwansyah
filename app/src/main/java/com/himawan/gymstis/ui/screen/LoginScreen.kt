@@ -9,19 +9,15 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.himawan.gymstis.GymStisApplication
 import com.himawan.gymstis.R
-import com.himawan.gymstis.data.UserRepository
-import com.himawan.gymstis.data.repositories.UserPreferencesRepository
-import com.himawan.gymstis.viewmodel.LoginResult
-import com.himawan.gymstis.viewmodel.LoginViewModel
+import com.himawan.gymstis.ui.viewmodel.LoginResult
+import com.himawan.gymstis.ui.viewmodel.LoginViewModel
 import kotlinx.coroutines.launch
 
 @Composable

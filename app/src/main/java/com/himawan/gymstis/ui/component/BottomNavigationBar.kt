@@ -6,7 +6,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
-import com.himawan.gymstis.ui.Screen
+import com.himawan.gymstis.ui.screen.Screen
 
 @Composable
 fun BottomNavigationBar(navController: NavController, selectedItem: Int, onItemSelected: (Int) -> Unit) {

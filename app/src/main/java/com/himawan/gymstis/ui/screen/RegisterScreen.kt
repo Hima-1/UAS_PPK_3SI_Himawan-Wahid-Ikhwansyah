@@ -33,8 +33,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.himawan.gymstis.R
 import com.himawan.gymstis.ui.component.GenderSelection
-import com.himawan.gymstis.viewmodel.RegisterResult
-import com.himawan.gymstis.viewmodel.RegisterViewModel
+import com.himawan.gymstis.ui.viewmodel.RegisterResult
+import com.himawan.gymstis.ui.viewmodel.RegisterViewModel
 import kotlinx.coroutines.launch
 
 @Composable

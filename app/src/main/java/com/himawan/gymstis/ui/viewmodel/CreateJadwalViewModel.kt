@@ -1,6 +1,5 @@
-package com.himawan.gymstis.viewmodel
+package com.himawan.gymstis.ui.viewmodel
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -11,8 +10,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.himawan.gymstis.GymStisApplication
-import com.himawan.gymstis.data.JadwalRepository
-import com.himawan.gymstis.data.repositories.UserPreferencesRepository
+import com.himawan.gymstis.api.JadwalRepository
+import com.himawan.gymstis.repositories.UserPreferencesRepository
 import com.himawan.gymstis.model.JadwalForm
 import com.himawan.gymstis.ui.screen.Gender
 import kotlinx.coroutines.flow.MutableStateFlow

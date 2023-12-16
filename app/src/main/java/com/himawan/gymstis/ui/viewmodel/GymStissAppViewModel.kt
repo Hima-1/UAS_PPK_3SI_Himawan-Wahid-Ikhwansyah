@@ -1,4 +1,4 @@
-package com.himawan.gymstis.ui
+package com.himawan.gymstis.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -7,16 +7,24 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.himawan.gymstis.GymStisApplication
-import com.himawan.gymstis.data.repositories.UserPreferencesRepository
-import com.himawan.gymstis.data.repositories.UserState
+import com.himawan.gymstis.repositories.UserPreferencesRepository
+import com.himawan.gymstis.repositories.UserState
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.serialization.ExperimentalSerializationApi
 
+@ExperimentalSerializationApi
 class GymStisAppViewModel(
     private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
+
+    private val _uiState = MutableStateFlow(GymStisApplication())
+    val uiState: StateFlow<GymStisApplication> = _uiState.asStateFlow()
+
     val userState: StateFlow<UserState> = userPreferencesRepository.user.map { user ->
         user
     }.stateIn(
@@ -30,14 +38,6 @@ class GymStisAppViewModel(
             isStaff = false,
         )
     )
-    
-    suspend fun logout() {
-        userPreferencesRepository.saveToken("")
-        userPreferencesRepository.saveName("")
-        userPreferencesRepository.saveEmail("")
-        userPreferencesRepository.saveGender("")
-        userPreferencesRepository.saveIsStaff(false)
-    }
     
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {

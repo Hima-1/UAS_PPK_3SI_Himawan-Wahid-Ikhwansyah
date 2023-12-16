@@ -1,9 +1,9 @@
-package com.himawan.gymstis.data
+package com.himawan.gymstis.repositories
 
 import com.himawan.gymstis.model.PeminjamanEditStatus
 import com.himawan.gymstis.model.PeminjamanRequest
 import com.himawan.gymstis.model.PeminjamanResponse
-import com.himawan.gymstis.service.PeminjamanService
+import com.himawan.gymstis.api.service.PeminjamanService
 
 class PeminjamanRepository(private val peminjamanService: PeminjamanService) {
     suspend fun createPeminjaman(token: String, peminjamanRequest: PeminjamanRequest): PeminjamanResponse = peminjamanService.createPeminjaman("Bearer $token", peminjamanRequest)

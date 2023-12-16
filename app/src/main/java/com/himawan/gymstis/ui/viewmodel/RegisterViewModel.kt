@@ -1,4 +1,4 @@
-package com.himawan.gymstis.viewmodel
+package com.himawan.gymstis.ui.viewmodel
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.himawan.gymstis.GymStisApplication
-import com.himawan.gymstis.data.UserRepository
+import com.himawan.gymstis.repositories.UserRepository
 import com.himawan.gymstis.model.RegisterForm
 import com.himawan.gymstis.ui.screen.Gender
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -46,6 +46,7 @@ class RegisterViewModel(private val userRepository: UserRepository) : ViewModel(
     suspend fun register() {
         if (!validateInputs()) {
             _registerResult.value = RegisterResult.EmptyField
+            return
         }
         try {
             userRepository.register(

@@ -11,10 +11,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.himawan.gymstis.R
-import com.himawan.gymstis.ui.Screen
 import com.himawan.gymstis.ui.component.GenderSelection
-import com.himawan.gymstis.viewmodel.EditProfileScreenViewModel
-import com.himawan.gymstis.viewmodel.LoginViewModel
+import com.himawan.gymstis.ui.viewmodel.EditProfileScreenViewModel
 import kotlinx.coroutines.launch
 
 enum class Gender { MALE, FEMALE }

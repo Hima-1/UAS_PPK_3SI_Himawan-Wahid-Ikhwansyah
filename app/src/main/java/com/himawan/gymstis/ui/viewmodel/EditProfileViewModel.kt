@@ -1,4 +1,4 @@
-package com.himawan.gymstis.viewmodel
+package com.himawan.gymstis.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.himawan.gymstis.GymStisApplication
-import com.himawan.gymstis.data.UserRepository
-import com.himawan.gymstis.data.repositories.UserPreferencesRepository
+import com.himawan.gymstis.repositories.UserRepository
+import com.himawan.gymstis.repositories.UserPreferencesRepository
 import com.himawan.gymstis.model.ProfileEditRequest
 import com.himawan.gymstis.ui.screen.Gender
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -47,8 +47,16 @@ class EditProfileScreenViewModel(
         this.gender.value = gender
     }
 
+    private fun validateInputs(): Boolean {
+        return name.value.isNotBlank() &&
+                email.value.isNotBlank()
+    }
+
     fun updateProfile() {
         viewModelScope.launch {
+            if (!validateInputs()) {
+                return@launch
+            }
             try {
                 val profileEditRequest = ProfileEditRequest(
                     name = name.value,

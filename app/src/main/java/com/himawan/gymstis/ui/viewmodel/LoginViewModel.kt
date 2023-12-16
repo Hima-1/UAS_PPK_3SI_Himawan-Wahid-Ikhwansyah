@@ -1,4 +1,4 @@
-package com.himawan.gymstis.viewmodel
+package com.himawan.gymstis.ui.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.himawan.gymstis.GymStisApplication
-import com.himawan.gymstis.data.UserRepository
-import com.himawan.gymstis.data.repositories.UserPreferencesRepository
+import com.himawan.gymstis.repositories.UserRepository
+import com.himawan.gymstis.repositories.UserPreferencesRepository
 import com.himawan.gymstis.model.AuthRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

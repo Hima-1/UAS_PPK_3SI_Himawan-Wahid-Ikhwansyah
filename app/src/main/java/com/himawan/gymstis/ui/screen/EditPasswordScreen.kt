@@ -16,8 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.himawan.gymstis.R
-import com.himawan.gymstis.ui.Screen
-import com.himawan.gymstis.viewmodel.EditPasswordViewModel
+import com.himawan.gymstis.ui.viewmodel.EditPasswordViewModel
 
 @Composable
 fun EditPasswordScreen(

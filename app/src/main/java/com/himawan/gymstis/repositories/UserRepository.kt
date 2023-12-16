@@ -1,4 +1,4 @@
-package com.himawan.gymstis.data
+package com.himawan.gymstis.repositories
 
 import com.himawan.gymstis.model.AuthRequest
 import com.himawan.gymstis.model.AuthResponse
@@ -6,7 +6,7 @@ import com.himawan.gymstis.model.PasswordChangeRequest
 import com.himawan.gymstis.model.ProfileEditRequest
 import com.himawan.gymstis.model.ProfileResponse
 import com.himawan.gymstis.model.User
-import com.himawan.gymstis.service.UserService
+import com.himawan.gymstis.api.service.UserService
 import com.himawan.gymstis.model.RegisterForm
 
 class UserRepository(private val userService: UserService) {

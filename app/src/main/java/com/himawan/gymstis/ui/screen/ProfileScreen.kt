@@ -38,7 +38,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.himawan.gymstis.viewmodel.ProfileViewModel
+import com.himawan.gymstis.ui.viewmodel.ProfileViewModel
 
 @Composable
 fun ProfileScreen(

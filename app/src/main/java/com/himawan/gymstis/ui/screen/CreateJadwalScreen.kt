@@ -28,10 +28,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.himawan.gymstis.R
-import com.himawan.gymstis.ui.Screen
 import com.himawan.gymstis.ui.component.DatePickerButton
 import com.himawan.gymstis.ui.component.GenderSelection
-import com.himawan.gymstis.viewmodel.CreateJadwalViewModel
+import com.himawan.gymstis.ui.viewmodel.CreateJadwalViewModel
 import java.time.Instant
 
 import java.time.ZoneId

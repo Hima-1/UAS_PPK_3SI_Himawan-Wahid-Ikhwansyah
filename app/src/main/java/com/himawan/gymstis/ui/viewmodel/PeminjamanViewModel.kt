@@ -1,6 +1,5 @@
-package com.himawan.gymstis.viewmodel
+package com.himawan.gymstis.ui.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -8,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.himawan.gymstis.GymStisApplication
-import com.himawan.gymstis.data.PeminjamanRepository
-import com.himawan.gymstis.data.repositories.UserPreferencesRepository
+import com.himawan.gymstis.repositories.PeminjamanRepository
+import com.himawan.gymstis.repositories.UserPreferencesRepository
 import com.himawan.gymstis.model.PeminjamanEditStatus
 import com.himawan.gymstis.model.PeminjamanResponse
 import com.himawan.gymstis.ui.screen.Status

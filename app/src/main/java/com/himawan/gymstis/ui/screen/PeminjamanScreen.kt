@@ -22,7 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.himawan.gymstis.viewmodel.PeminjamanViewModel
+import com.himawan.gymstis.ui.viewmodel.PeminjamanViewModel
 
 
 data class PeminjamanItem(

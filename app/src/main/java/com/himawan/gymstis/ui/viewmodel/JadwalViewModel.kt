@@ -1,4 +1,4 @@
-package com.himawan.gymstis.viewmodel
+package com.himawan.gymstis.ui.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -8,9 +8,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.himawan.gymstis.GymStisApplication
-import com.himawan.gymstis.data.JadwalRepository
-import com.himawan.gymstis.data.PeminjamanRepository
-import com.himawan.gymstis.data.repositories.UserPreferencesRepository
+import com.himawan.gymstis.api.JadwalRepository
+import com.himawan.gymstis.repositories.PeminjamanRepository
+import com.himawan.gymstis.repositories.UserPreferencesRepository
 import com.himawan.gymstis.model.JadwalResponse
 import com.himawan.gymstis.model.PeminjamanRequest
 import kotlinx.coroutines.flow.MutableStateFlow
