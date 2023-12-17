@@ -90,8 +90,9 @@ fun CreateJadwalScreen(
         )
         Spacer(modifier = Modifier.height(24.dp))
 
-        val selectedDateMillis by remember { mutableLongStateOf(System.currentTimeMillis()) }
+        var selectedDateMillis by remember { mutableLongStateOf(System.currentTimeMillis()) }
         DatePickerButton(context, selectedDateMillis) { newDateMillis ->
+            selectedDateMillis = newDateMillis
             val newDate =
                 Instant.ofEpochMilli(newDateMillis).atZone(ZoneId.systemDefault()).toLocalDate()
             createJadwalViewModel.updateDate(newDate)
