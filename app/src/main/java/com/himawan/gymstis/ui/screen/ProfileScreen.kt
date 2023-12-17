@@ -63,10 +63,12 @@ fun ProfileScreen(
                 }
                 profileViewModel.resetActionStatus()
             }
+
             ProfileActionStatus.Error -> {
                 Toast.makeText(context, "Error performing action", Toast.LENGTH_SHORT).show()
                 profileViewModel.resetActionStatus()
             }
+
             ProfileActionStatus.None -> {
                 // do nothing
             }

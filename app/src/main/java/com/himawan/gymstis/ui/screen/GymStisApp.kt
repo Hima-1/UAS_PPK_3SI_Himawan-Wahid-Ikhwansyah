@@ -54,14 +54,14 @@ fun GymStisApp(
     Scaffold(
         bottomBar = {
             if (loggedInUser.token.isNotEmpty()) {
-                    BottomNavigationBar(navController, selectedItem) { selectedIndex ->
-                        selectedItem = selectedIndex
-                        navController.navigate(Screen.values()[selectedIndex].route) {
-                            popUpTo(navController.graph.startDestinationId)
-                            launchSingleTop = true
-                        }
+                BottomNavigationBar(navController, selectedItem) { selectedIndex ->
+                    selectedItem = selectedIndex
+                    navController.navigate(Screen.values()[selectedIndex].route) {
+                        popUpTo(navController.graph.startDestinationId)
+                        launchSingleTop = true
                     }
                 }
+            }
         },
         floatingActionButton = {
             if (isStaff && navBackStackEntry?.destination?.route == Screen.Jadwal.route) {

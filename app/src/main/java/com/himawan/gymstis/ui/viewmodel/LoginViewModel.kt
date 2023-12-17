@@ -8,9 +8,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.himawan.gymstis.GymStisApplication
-import com.himawan.gymstis.repositories.UserRepository
-import com.himawan.gymstis.repositories.UserPreferencesRepository
 import com.himawan.gymstis.model.AuthRequest
+import com.himawan.gymstis.repositories.UserPreferencesRepository
+import com.himawan.gymstis.repositories.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -27,6 +27,7 @@ class LoginViewModel(
     fun updateEmail(email: String) {
         this.email = email
     }
+
     fun updatePassword(password: String) {
         this.password = password
     }
@@ -57,7 +58,8 @@ class LoginViewModel(
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val application = (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as GymStisApplication)
+                val application =
+                    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as GymStisApplication)
                 val userRepository = application.container.userRepository
                 LoginViewModel(
                     userPreferencesRepository = application.userPreferenceRepository,

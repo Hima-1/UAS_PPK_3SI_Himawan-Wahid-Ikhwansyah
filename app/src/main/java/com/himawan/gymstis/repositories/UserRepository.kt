@@ -14,7 +14,14 @@ class UserRepository(private val userService: UserService) {
     suspend fun register(registerForm: RegisterForm): User = userService.register(registerForm)
     suspend fun getProfile(token: String): ProfileResponse = userService.getProfile("Bearer $token")
     suspend fun deleteProfile(token: String) = userService.deleteProfile("Bearer $token")
-    suspend fun updateProfile(token: String, profileEditRequest: ProfileEditRequest): ProfileResponse = userService.updateProfile("Bearer $token", profileEditRequest)
-    suspend fun updatePassword(token: String, passwordChangeRequest: PasswordChangeRequest): ProfileResponse = userService.updatePassword("Bearer $token", passwordChangeRequest)
+    suspend fun updateProfile(
+        token: String,
+        profileEditRequest: ProfileEditRequest
+    ): ProfileResponse = userService.updateProfile("Bearer $token", profileEditRequest)
+
+    suspend fun updatePassword(
+        token: String,
+        passwordChangeRequest: PasswordChangeRequest
+    ): ProfileResponse = userService.updatePassword("Bearer $token", passwordChangeRequest)
 }
 

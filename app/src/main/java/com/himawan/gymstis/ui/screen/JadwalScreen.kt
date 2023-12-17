@@ -60,10 +60,12 @@ fun JadwalScreen(
                 Toast.makeText(context, "Jadwal deleted successfully", Toast.LENGTH_SHORT).show()
                 jadwalViewModel.resetActionStatus()
             }
+
             ActionStatus.Error -> {
                 Toast.makeText(context, "Error deleting Jadwal", Toast.LENGTH_SHORT).show()
                 jadwalViewModel.resetActionStatus()
             }
+
             ActionStatus.None -> {}
         }
     }
@@ -71,13 +73,16 @@ fun JadwalScreen(
     LaunchedEffect(applyStatus) {
         when (applyStatus) {
             ActionStatus.Success -> {
-                Toast.makeText(context, "Applied for Jadwal successfully", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Applied for Jadwal successfully", Toast.LENGTH_SHORT)
+                    .show()
                 jadwalViewModel.resetActionStatus()
             }
+
             ActionStatus.Error -> {
                 Toast.makeText(context, "Error applying for Jadwal", Toast.LENGTH_SHORT).show()
                 jadwalViewModel.resetActionStatus()
             }
+
             ActionStatus.None -> {}
         }
     }
@@ -85,8 +90,8 @@ fun JadwalScreen(
     FilterChipGroup(
         selectedFilters = selectedFilters,
         onFilterChange = {
-        jadwalViewModel.setSelectedFilters(selectedFilters.toSet())
-    })
+            jadwalViewModel.setSelectedFilters(selectedFilters.toSet())
+        })
 
 
     LazyColumn {
@@ -138,7 +143,10 @@ fun JadwalItemRow(
 
 @ExperimentalMaterial3Api
 @Composable
-fun FilterChipGroup(selectedFilters: SnapshotStateList<FilterCriteriaJadwal>, onFilterChange: () -> Unit) {
+fun FilterChipGroup(
+    selectedFilters: SnapshotStateList<FilterCriteriaJadwal>,
+    onFilterChange: () -> Unit
+) {
     Row {
         FilterCriteriaJadwal.values().forEach { criteria ->
             FilterChip(

@@ -9,7 +9,11 @@ import androidx.navigation.NavController
 import com.himawan.gymstis.ui.screen.Screen
 
 @Composable
-fun BottomNavigationBar(navController: NavController, selectedItem: Int, onItemSelected: (Int) -> Unit) {
+fun BottomNavigationBar(
+    navController: NavController,
+    selectedItem: Int,
+    onItemSelected: (Int) -> Unit
+) {
     NavigationBar {
         Screen.values().forEachIndexed { index, screen ->
             NavigationBarItem(

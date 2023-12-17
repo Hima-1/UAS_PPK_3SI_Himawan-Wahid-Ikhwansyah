@@ -23,7 +23,11 @@ import java.util.Locale
 
 @ExperimentalMaterial3Api
 @Composable
-fun DatePickerButton(context: android.content.Context, selectedDateMillis: Long, onDateSelected: (Long) -> Unit) {
+fun DatePickerButton(
+    context: android.content.Context,
+    selectedDateMillis: Long,
+    onDateSelected: (Long) -> Unit
+) {
     val dateFormatter = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
     val selectedDate = dateFormatter.format(Date(selectedDateMillis))
     var showDialog by remember { mutableStateOf(false) }

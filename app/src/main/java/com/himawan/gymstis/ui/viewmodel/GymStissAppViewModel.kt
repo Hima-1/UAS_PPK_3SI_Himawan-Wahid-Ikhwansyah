@@ -9,7 +9,6 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.himawan.gymstis.GymStisApplication
 import com.himawan.gymstis.repositories.UserPreferencesRepository
 import com.himawan.gymstis.repositories.UserState
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -34,7 +33,7 @@ class GymStisAppViewModel(
             isStaff = false,
         )
     )
-    
+
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {

@@ -59,10 +59,12 @@ fun CreateJadwalScreen(
                 }
                 createJadwalViewModel.resetCreationResult()
             }
+
             JadwalCreationResult.Error -> {
                 Toast.makeText(context, "Error creating Jadwal", Toast.LENGTH_SHORT).show()
                 createJadwalViewModel.resetCreationResult()
             }
+
             JadwalCreationResult.None -> {
                 // Do nothing
             }

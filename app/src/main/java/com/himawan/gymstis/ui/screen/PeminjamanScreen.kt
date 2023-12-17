@@ -73,10 +73,12 @@ fun PeminjamanScreen(
                 Toast.makeText(context, "Status updated successfully", Toast.LENGTH_SHORT).show()
                 peminjamanViewModel.resetUpdateStatusResult()
             }
+
             UpdateStatusResult.Error -> {
                 Toast.makeText(context, "Error updating status", Toast.LENGTH_SHORT).show()
                 peminjamanViewModel.resetUpdateStatusResult()
             }
+
             UpdateStatusResult.None -> {
                 // do nothing
             }
@@ -163,7 +165,10 @@ fun PeminjamanItemRow(item: PeminjamanItem, isStaff: Boolean, viewModel: Peminja
 
 @ExperimentalMaterial3Api
 @Composable
-fun FilterChipGroup(selectedFilters: SnapshotStateList<FilterCriteriaPeminjaman>, onFilterChange: () -> Unit) {
+fun FilterChipGroup(
+    selectedFilters: SnapshotStateList<FilterCriteriaPeminjaman>,
+    onFilterChange: () -> Unit
+) {
     Row {
         FilterCriteriaPeminjaman.values().forEach { criteria ->
             FilterChip(

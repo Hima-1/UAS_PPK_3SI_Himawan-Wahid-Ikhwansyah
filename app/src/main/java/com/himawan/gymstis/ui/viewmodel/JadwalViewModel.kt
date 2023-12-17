@@ -1,6 +1,5 @@
 package com.himawan.gymstis.ui.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -8,11 +7,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.himawan.gymstis.GymStisApplication
+import com.himawan.gymstis.model.JadwalResponse
+import com.himawan.gymstis.model.PeminjamanRequest
 import com.himawan.gymstis.repositories.JadwalRepository
 import com.himawan.gymstis.repositories.PeminjamanRepository
 import com.himawan.gymstis.repositories.UserPreferencesRepository
-import com.himawan.gymstis.model.JadwalResponse
-import com.himawan.gymstis.model.PeminjamanRequest
 import com.himawan.gymstis.ui.screen.FilterCriteriaJadwal
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -74,8 +73,7 @@ class JadwalViewModel(
                 jadwalRepository.deleteJadwal(token, jadwalId)
                 refreshJadwals()
                 _deleteStatus.value = ActionStatus.Success
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 e.printStackTrace()
                 _deleteStatus.value = ActionStatus.Error
             }
@@ -106,7 +104,10 @@ class JadwalViewModel(
         _selectedFilters.value = filters
     }
 
-    private fun matchesFilters(jadwal: JadwalResponse, filters: Set<FilterCriteriaJadwal>): Boolean {
+    private fun matchesFilters(
+        jadwal: JadwalResponse,
+        filters: Set<FilterCriteriaJadwal>
+    ): Boolean {
         val isOngoing = jadwal.date >= LocalDate.now()
         val isCompleted = jadwal.date < LocalDate.now()
         val isMale = jadwal.gender == "MALE"

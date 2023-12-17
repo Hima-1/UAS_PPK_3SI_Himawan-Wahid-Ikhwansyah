@@ -40,16 +40,20 @@ fun EditPasswordScreen(
                 }
                 editPasswordViewModel.resetPasswordChangeResult()
             }
+
             PasswordChangeResult.Error -> {
                 Toast.makeText(context, "Error changing password", Toast.LENGTH_SHORT).show()
                 editPasswordViewModel.resetPasswordChangeResult()
             }
+
             PasswordChangeResult.None -> {
 
             }
+
             PasswordChangeResult.BadInput -> {
                 Toast.makeText(context, "Bad input", Toast.LENGTH_SHORT).show()
-                editPasswordViewModel.resetPasswordChangeResult()}
+                editPasswordViewModel.resetPasswordChangeResult()
+            }
         }
     }
 
@@ -75,7 +79,8 @@ fun EditPasswordScreen(
             label = { Text("Password") },
             visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
-                val image = if (passwordVisibility) Icons.Filled.VisibilityOff else Icons.Filled.Visibility
+                val image =
+                    if (passwordVisibility) Icons.Filled.VisibilityOff else Icons.Filled.Visibility
                 IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
                     Icon(imageVector = image, contentDescription = "Toggle password visibility")
                 }

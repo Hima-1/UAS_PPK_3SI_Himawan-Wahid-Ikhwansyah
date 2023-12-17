@@ -1,6 +1,5 @@
 package com.himawan.gymstis.ui.screen
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -61,14 +60,17 @@ fun RegisterScreen(
                 }
                 registerViewModel.resetRegisterResult()
             }
+
             RegisterResult.EmptyField -> {
                 Toast.makeText(context, "Please fill in all fields", Toast.LENGTH_SHORT).show()
                 registerViewModel.resetRegisterResult()
             }
+
             RegisterResult.NetworkError -> {
                 Toast.makeText(context, "Network error", Toast.LENGTH_SHORT).show()
                 registerViewModel.resetRegisterResult()
             }
+
             null -> {
                 // Do nothing
             }

@@ -10,9 +10,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.himawan.gymstis.GymStisApplication
+import com.himawan.gymstis.model.JadwalForm
 import com.himawan.gymstis.repositories.JadwalRepository
 import com.himawan.gymstis.repositories.UserPreferencesRepository
-import com.himawan.gymstis.model.JadwalForm
 import com.himawan.gymstis.ui.screen.Gender
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,9 +29,10 @@ class CreateJadwalViewModel(
     var gender by mutableStateOf(Gender.MALE)
     var kuota by mutableStateOf("")
 
-    private val _jadwalCreationResult = MutableStateFlow<JadwalCreationResult>(JadwalCreationResult.None)
+    private val _jadwalCreationResult =
+        MutableStateFlow<JadwalCreationResult>(JadwalCreationResult.None)
     val jadwalCreationResult = _jadwalCreationResult.asStateFlow()
-    
+
     init {
         viewModelScope.launch {
             userPreferencesRepository.user.collect { user ->
@@ -40,7 +41,7 @@ class CreateJadwalViewModel(
         }
     }
 
-    fun createJadwal(){
+    fun createJadwal() {
         try {
             if (!validateJadwalForm()) {
                 _jadwalCreationResult.value = JadwalCreationResult.Error
@@ -58,7 +59,7 @@ class CreateJadwalViewModel(
                 _jadwalCreationResult.value = JadwalCreationResult.Success
             }
         } catch (e: Exception) {
-             _jadwalCreationResult.value = JadwalCreationResult.Error
+            _jadwalCreationResult.value = JadwalCreationResult.Error
         }
     }
 

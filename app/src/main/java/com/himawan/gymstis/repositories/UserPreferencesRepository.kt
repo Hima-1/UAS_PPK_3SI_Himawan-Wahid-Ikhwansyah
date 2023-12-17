@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 
-class UserPreferencesRepository (
+class UserPreferencesRepository(
     private val dataStore: DataStore<Preferences>
 ) {
     private companion object {
@@ -65,6 +65,7 @@ class UserPreferencesRepository (
             preferences[GENDER] = gender
         }
     }
+
     suspend fun clearUserData() {
         dataStore.edit { preferences ->
             preferences[TOKEN] = ""

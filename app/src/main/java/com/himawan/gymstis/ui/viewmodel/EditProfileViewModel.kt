@@ -6,9 +6,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.himawan.gymstis.GymStisApplication
-import com.himawan.gymstis.repositories.UserRepository
-import com.himawan.gymstis.repositories.UserPreferencesRepository
 import com.himawan.gymstis.model.ProfileEditRequest
+import com.himawan.gymstis.repositories.UserPreferencesRepository
+import com.himawan.gymstis.repositories.UserRepository
 import com.himawan.gymstis.ui.screen.Gender
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -84,7 +84,8 @@ class EditProfileScreenViewModel(
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val application = (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as GymStisApplication)
+                val application =
+                    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as GymStisApplication)
                 val userRepository = application.container.userRepository
                 val userPreferencesRepository = application.userPreferenceRepository
                 EditProfileScreenViewModel(userPreferencesRepository, userRepository)

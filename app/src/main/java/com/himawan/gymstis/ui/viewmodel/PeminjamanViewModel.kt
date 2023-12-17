@@ -7,10 +7,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.himawan.gymstis.GymStisApplication
+import com.himawan.gymstis.model.PeminjamanResponse
+import com.himawan.gymstis.model.PeminjamanStatusRequest
 import com.himawan.gymstis.repositories.PeminjamanRepository
 import com.himawan.gymstis.repositories.UserPreferencesRepository
-import com.himawan.gymstis.model.PeminjamanStatusRequest
-import com.himawan.gymstis.model.PeminjamanResponse
 import com.himawan.gymstis.ui.screen.FilterCriteriaPeminjaman
 import com.himawan.gymstis.ui.screen.Gender
 import com.himawan.gymstis.ui.screen.Status
@@ -52,6 +52,7 @@ class PeminjamanViewModel(
             }
         }
     }
+
     private fun fetchPeminjaman() {
         viewModelScope.launch {
             try {
@@ -84,7 +85,10 @@ class PeminjamanViewModel(
         _updateStatusResult.value = UpdateStatusResult.None
     }
 
-    private fun matchesFilters(item: PeminjamanResponse, filters: Set<FilterCriteriaPeminjaman>): Boolean {
+    private fun matchesFilters(
+        item: PeminjamanResponse,
+        filters: Set<FilterCriteriaPeminjaman>
+    ): Boolean {
         val isOngoing = item.date >= LocalDate.now() // Adjust if necessary
         val isCompleted = item.date < LocalDate.now() // Adjust if necessary
         val isMale = item.gender == Gender.MALE
