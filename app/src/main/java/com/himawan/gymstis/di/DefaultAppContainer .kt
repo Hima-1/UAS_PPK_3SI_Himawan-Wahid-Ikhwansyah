@@ -1,12 +1,12 @@
 package com.himawan.gymstis.di
 
-import com.himawan.gymstis.repositories.JadwalRepository
-import com.himawan.gymstis.repositories.PeminjamanRepository
 import com.himawan.gymstis.api.RetrofitConfig
-import com.himawan.gymstis.repositories.UserRepository
 import com.himawan.gymstis.api.service.JadwalService
 import com.himawan.gymstis.api.service.PeminjamanService
 import com.himawan.gymstis.api.service.UserService
+import com.himawan.gymstis.repositories.JadwalRepository
+import com.himawan.gymstis.repositories.PeminjamanRepository
+import com.himawan.gymstis.repositories.UserRepository
 import kotlinx.serialization.ExperimentalSerializationApi
 
 @ExperimentalSerializationApi

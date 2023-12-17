@@ -5,14 +5,14 @@ import com.himawan.gymstis.model.AuthResponse
 import com.himawan.gymstis.model.PasswordChangeRequest
 import com.himawan.gymstis.model.ProfileEditRequest
 import com.himawan.gymstis.model.ProfileResponse
-import com.himawan.gymstis.model.User
 import com.himawan.gymstis.model.RegisterForm
+import com.himawan.gymstis.model.User
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
-import retrofit2.http.POST
 import retrofit2.http.Header
 import retrofit2.http.PATCH
+import retrofit2.http.POST
 import retrofit2.http.PUT
 
 interface UserService {
@@ -29,8 +29,14 @@ interface UserService {
     suspend fun deleteProfile(@Header("Authorization") token: String)
 
     @PUT("/profile")
-    suspend fun updateProfile(@Header("Authorization") token: String, @Body profileEditRequest: ProfileEditRequest): ProfileResponse
+    suspend fun updateProfile(
+        @Header("Authorization") token: String,
+        @Body profileEditRequest: ProfileEditRequest
+    ): ProfileResponse
 
     @PATCH("/profile/password")
-    suspend fun updatePassword(@Header("Authorization") token: String, @Body passwordChangeRequest: PasswordChangeRequest): ProfileResponse
+    suspend fun updatePassword(
+        @Header("Authorization") token: String,
+        @Body passwordChangeRequest: PasswordChangeRequest
+    ): ProfileResponse
 }

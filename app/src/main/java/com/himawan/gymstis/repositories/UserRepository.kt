@@ -1,13 +1,13 @@
 package com.himawan.gymstis.repositories
 
+import com.himawan.gymstis.api.service.UserService
 import com.himawan.gymstis.model.AuthRequest
 import com.himawan.gymstis.model.AuthResponse
 import com.himawan.gymstis.model.PasswordChangeRequest
 import com.himawan.gymstis.model.ProfileEditRequest
 import com.himawan.gymstis.model.ProfileResponse
-import com.himawan.gymstis.model.User
-import com.himawan.gymstis.api.service.UserService
 import com.himawan.gymstis.model.RegisterForm
+import com.himawan.gymstis.model.User
 
 class UserRepository(private val userService: UserService) {
     suspend fun login(authRequest: AuthRequest): AuthResponse = userService.login(authRequest)

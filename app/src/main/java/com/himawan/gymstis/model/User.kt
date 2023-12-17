@@ -3,7 +3,7 @@ package com.himawan.gymstis.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class User (
+data class User(
     val id: Long?,
     val name: String,
     val password: String,

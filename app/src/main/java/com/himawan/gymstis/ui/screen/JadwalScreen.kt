@@ -1,7 +1,11 @@
 package com.himawan.gymstis.ui.screen
 
 import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -21,7 +25,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.himawan.gymstis.ui.viewmodel.ActionStatus
@@ -86,27 +93,26 @@ fun JadwalScreen(
             ActionStatus.None -> {}
         }
     }
-
-    FilterChipGroup(
-        selectedFilters = selectedFilters,
-        onFilterChange = {
-            jadwalViewModel.setSelectedFilters(selectedFilters.toSet())
-        })
-
-
-    LazyColumn {
-        items(filteredJadwals) { jadwal ->
-            JadwalItemRow(
-                item = JadwalItem(
-                    gender = jadwal.gender,
-                    dayName = jadwal.hari,
-                    date = jadwal.date.toString(),
-                    quota = "${jadwal.peminjam}/${jadwal.kuota}"
-                ),
-                isStaff = isStaff,
-                onDeleteClick = { jadwalViewModel.deleteJadwal(jadwal.id) }
-            ) { jadwalViewModel.applyForJadwal(jadwal.date) }
-            Divider()
+    Column {
+        FilterChipGroup(
+            selectedFilters = selectedFilters,
+            onFilterChange = {
+                jadwalViewModel.setSelectedFilters(selectedFilters.toSet())
+            })
+        LazyColumn {
+            items(filteredJadwals) { jadwal ->
+                JadwalItemRow(
+                    item = JadwalItem(
+                        gender = jadwal.gender,
+                        dayName = jadwal.hari,
+                        date = jadwal.date.toString(),
+                        quota = "${jadwal.peminjam}/${jadwal.kuota}"
+                    ),
+                    isStaff = isStaff,
+                    onDeleteClick = { jadwalViewModel.deleteJadwal(jadwal.id) }
+                ) { jadwalViewModel.applyForJadwal(jadwal.date) }
+                Divider()
+            }
         }
     }
 }
@@ -147,7 +153,13 @@ fun FilterChipGroup(
     selectedFilters: SnapshotStateList<FilterCriteriaJadwal>,
     onFilterChange: () -> Unit
 ) {
-    Row {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp), // Padding for the entire Row
+        horizontalArrangement = Arrangement.Center, // Center chips in the Row
+        verticalAlignment = Alignment.CenterVertically // Align chips vertically in center
+    ) {
         FilterCriteriaJadwal.values().forEach { criteria ->
             FilterChip(
                 selected = criteria in selectedFilters,
@@ -159,7 +171,11 @@ fun FilterChipGroup(
                     }
                     onFilterChange()
                 },
-                label = { Text(criteria.name) }
+                label = { Text(criteria.name) },
+                modifier = Modifier.padding(
+                    horizontal = 4.dp,
+                    vertical = 8.dp
+                )
             )
         }
     }

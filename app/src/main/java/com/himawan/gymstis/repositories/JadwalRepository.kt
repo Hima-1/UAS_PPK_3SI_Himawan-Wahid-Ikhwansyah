@@ -1,8 +1,8 @@
 package com.himawan.gymstis.repositories
 
+import com.himawan.gymstis.api.service.JadwalService
 import com.himawan.gymstis.model.JadwalForm
 import com.himawan.gymstis.model.JadwalResponse
-import com.himawan.gymstis.api.service.JadwalService
 import retrofit2.Response
 
 class JadwalRepository(private val jadwalService: JadwalService) {

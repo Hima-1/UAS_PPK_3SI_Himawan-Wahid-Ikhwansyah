@@ -13,14 +13,23 @@ import retrofit2.http.Path
 
 interface JadwalService {
     @POST("/api/jadwal")
-    suspend fun createJadwal(@Header("Authorization") token: String, @Body jadwalForm: JadwalForm): Response<Unit>
+    suspend fun createJadwal(
+        @Header("Authorization") token: String,
+        @Body jadwalForm: JadwalForm
+    ): Response<Unit>
 
     @GET("/api/jadwal")
     suspend fun getAvailableJadwals(@Header("Authorization") token: String): List<JadwalResponse>
 
     @PUT("/api/jadwal")
-    suspend fun updateJadwal(@Header("Authorization") token: String, @Body jadwalForm: JadwalForm): JadwalResponse
+    suspend fun updateJadwal(
+        @Header("Authorization") token: String,
+        @Body jadwalForm: JadwalForm
+    ): JadwalResponse
 
     @DELETE("jadwal/{id}")
-    suspend fun deleteJadwal(@Header("Authorization") token: String, @Path("id") jadwalId: Long): Response<Unit>
+    suspend fun deleteJadwal(
+        @Header("Authorization") token: String,
+        @Path("id") jadwalId: Long
+    ): Response<Unit>
 }

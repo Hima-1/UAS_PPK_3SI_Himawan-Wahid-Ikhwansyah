@@ -1,9 +1,9 @@
 package com.himawan.gymstis.repositories
 
-import com.himawan.gymstis.model.PeminjamanStatusRequest
+import com.himawan.gymstis.api.service.PeminjamanService
 import com.himawan.gymstis.model.PeminjamanRequest
 import com.himawan.gymstis.model.PeminjamanResponse
-import com.himawan.gymstis.api.service.PeminjamanService
+import com.himawan.gymstis.model.PeminjamanStatusRequest
 
 class PeminjamanRepository(private val peminjamanService: PeminjamanService) {
     suspend fun createPeminjaman(

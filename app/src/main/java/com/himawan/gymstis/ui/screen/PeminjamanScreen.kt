@@ -1,9 +1,16 @@
 package com.himawan.gymstis.ui.screen
 
 import android.widget.Toast
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.CheckCircle
@@ -27,7 +34,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.himawan.gymstis.ui.viewmodel.PeminjamanViewModel
 import com.himawan.gymstis.ui.viewmodel.UpdateStatusResult
@@ -85,25 +95,28 @@ fun PeminjamanScreen(
         }
     }
 
-    FilterChipGroup(selectedFilters = selectedFilters, onFilterChange = {
-        peminjamanViewModel.setSelectedFilters(selectedFilters.toSet())
-    })
+    Column {
 
-    LazyColumn {
-        items(filteredItems) { item ->
-            PeminjamanItemRow(
-                item = PeminjamanItem(
-                    id = item.id,
-                    gender = item.gender,
-                    dayName = item.dayName,
-                    date = item.date.toString(),
-                    quota = "${item.peminjam}/${item.kuota}",
-                    status = item.status
-                ),
-                isStaff = isStaff,
-                viewModel = peminjamanViewModel
-            )
-            Divider()
+        FilterChipGroup(selectedFilters = selectedFilters, onFilterChange = {
+            peminjamanViewModel.setSelectedFilters(selectedFilters.toSet())
+        })
+
+        LazyColumn {
+            items(filteredItems) { item ->
+                PeminjamanItemRow(
+                    item = PeminjamanItem(
+                        id = item.id,
+                        gender = item.gender,
+                        dayName = item.dayName,
+                        date = item.date.toString(),
+                        quota = "${item.peminjam}/${item.kuota}",
+                        status = item.status
+                    ),
+                    isStaff = isStaff,
+                    viewModel = peminjamanViewModel
+                )
+                Divider()
+            }
         }
     }
 }
@@ -169,20 +182,33 @@ fun FilterChipGroup(
     selectedFilters: SnapshotStateList<FilterCriteriaPeminjaman>,
     onFilterChange: () -> Unit
 ) {
-    Row {
-        FilterCriteriaPeminjaman.values().forEach { criteria ->
-            FilterChip(
-                selected = criteria in selectedFilters,
-                onClick = {
-                    if (criteria in selectedFilters) {
-                        selectedFilters.remove(criteria)
-                    } else {
-                        selectedFilters.add(criteria)
-                    }
-                    onFilterChange()
-                },
-                label = { Text(criteria.name) }
-            )
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .horizontalScroll(rememberScrollState())
+                .padding(horizontal = 8.dp),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            FilterCriteriaPeminjaman.values().forEach { criteria ->
+                FilterChip(
+                    selected = criteria in selectedFilters,
+                    onClick = {
+                        if (criteria in selectedFilters) {
+                            selectedFilters.remove(criteria)
+                        } else {
+                            selectedFilters.add(criteria)
+                        }
+                        onFilterChange()
+                    },
+                    label = { Text(criteria.name) },
+                    modifier = Modifier.padding(horizontal = 4.dp, vertical = 4.dp)
+                )
+            }
         }
     }
 }
