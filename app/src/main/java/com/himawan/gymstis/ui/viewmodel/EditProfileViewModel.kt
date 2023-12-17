@@ -13,6 +13,7 @@ import com.himawan.gymstis.ui.screen.Gender
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.serialization.ExperimentalSerializationApi
 
 class EditProfileScreenViewModel(
     private val userPreferencesRepository: UserPreferencesRepository,
@@ -22,8 +23,8 @@ class EditProfileScreenViewModel(
     var name = MutableStateFlow("")
     var gender = MutableStateFlow(Gender.MALE)
 
-    private val _profileUpdated = MutableStateFlow(false)
-    val profileUpdated = _profileUpdated.asStateFlow()
+    private val _profileUpdateResult = MutableStateFlow(ProfileUpdateResult.None)
+    val profileUpdateResult = _profileUpdateResult.asStateFlow()
 
     private lateinit var token: String
 
@@ -55,6 +56,7 @@ class EditProfileScreenViewModel(
     fun updateProfile() {
         viewModelScope.launch {
             if (!validateInputs()) {
+                _profileUpdateResult.value = ProfileUpdateResult.BadInput
                 return@launch
             }
             try {
@@ -65,18 +67,20 @@ class EditProfileScreenViewModel(
                 )
                 userRepository.updateProfile(token, profileEditRequest)
                 userPreferencesRepository.clearUserData()
-                _profileUpdated.value = true
+                _profileUpdateResult.value = ProfileUpdateResult.Success
             } catch (e: Exception) {
                 e.printStackTrace()
+                _profileUpdateResult.value = ProfileUpdateResult.Error
             }
         }
     }
 
-    fun resetNavigationTrigger() {
-        _profileUpdated.value = false
+    fun resetProfileUpdateResult() {
+        _profileUpdateResult.value = ProfileUpdateResult.None
     }
 
 
+    @ExperimentalSerializationApi
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
@@ -87,4 +91,11 @@ class EditProfileScreenViewModel(
             }
         }
     }
+}
+
+enum class ProfileUpdateResult {
+    Success,
+    Error,
+    None,
+    BadInput
 }

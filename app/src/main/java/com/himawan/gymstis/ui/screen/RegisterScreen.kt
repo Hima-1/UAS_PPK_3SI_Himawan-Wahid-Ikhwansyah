@@ -1,6 +1,7 @@
 package com.himawan.gymstis.ui.screen
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -43,6 +45,7 @@ fun RegisterScreen(
     registerViewModel: RegisterViewModel = viewModel(factory = RegisterViewModel.Factory)
 ) {
     val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
     val email by registerViewModel.email
     val name by registerViewModel.name
     val password by registerViewModel.password
@@ -51,12 +54,24 @@ fun RegisterScreen(
     val registerResult by registerViewModel.registerResult.collectAsState()
 
     LaunchedEffect(registerResult) {
-        if (registerResult == RegisterResult.Success) {
-            Log.d("RegisterScreen", "Register Success")
-            navController.navigate("login") {
-                popUpTo("login") { inclusive = true }
+        when (registerResult) {
+            RegisterResult.Success -> {
+                navController.navigate("login") {
+                    popUpTo("login") { inclusive = true }
+                }
+                registerViewModel.resetRegisterResult()
             }
-            registerViewModel.resetRegisterResult()
+            RegisterResult.EmptyField -> {
+                Toast.makeText(context, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                registerViewModel.resetRegisterResult()
+            }
+            RegisterResult.NetworkError -> {
+                Toast.makeText(context, "Network error", Toast.LENGTH_SHORT).show()
+                registerViewModel.resetRegisterResult()
+            }
+            null -> {
+                // Do nothing
+            }
         }
     }
 

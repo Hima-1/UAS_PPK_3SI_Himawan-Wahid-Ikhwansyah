@@ -17,6 +17,7 @@ import com.himawan.gymstis.ui.screen.Gender
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.serialization.ExperimentalSerializationApi
 import java.time.LocalDate
 
 class CreateJadwalViewModel(
@@ -28,8 +29,8 @@ class CreateJadwalViewModel(
     var gender by mutableStateOf(Gender.MALE)
     var kuota by mutableStateOf("")
 
-    private val _navigateToJadwal = MutableStateFlow(false)
-    val navigateToJadwal = _navigateToJadwal.asStateFlow()
+    private val _jadwalCreationResult = MutableStateFlow<JadwalCreationResult>(JadwalCreationResult.None)
+    val jadwalCreationResult = _jadwalCreationResult.asStateFlow()
     
     init {
         viewModelScope.launch {
@@ -39,25 +40,34 @@ class CreateJadwalViewModel(
         }
     }
 
-    fun createJadwal(): CreateJadwalResult {
-        return try {
-            viewModelScope.launch {
-                val jadwalForm = JadwalForm(
-                    date = selectedDate,
-                    gender = gender,
-                    kuota = kuota.toInt()
-                )
-                jadwalRepository.createJadwal(token, jadwalForm)
-                _navigateToJadwal.value = true
+    fun createJadwal(){
+        try {
+            if (!validateJadwalForm()) {
+                _jadwalCreationResult.value = JadwalCreationResult.Error
+                return
             }
-            CreateJadwalResult.Success
+            viewModelScope.launch {
+                val jadwalForm = selectedDate?.let {
+                    JadwalForm(
+                        date = it,
+                        gender = gender,
+                        kuota = kuota.toInt()
+                    )
+                }
+                jadwalForm?.let { jadwalRepository.createJadwal(token, it) }
+                _jadwalCreationResult.value = JadwalCreationResult.Success
+            }
         } catch (e: Exception) {
-            CreateJadwalResult.Error
+             _jadwalCreationResult.value = JadwalCreationResult.Error
         }
     }
 
-    fun resetNavigationTrigger() {
-        _navigateToJadwal.value = false
+    fun validateJadwalForm(): Boolean {
+        return selectedDate != null && kuota.isNotEmpty()
+    }
+
+    fun resetCreationResult() {
+        _jadwalCreationResult.value = JadwalCreationResult.None
     }
 
     fun updateDate(newDate: LocalDate) {
@@ -72,6 +82,7 @@ class CreateJadwalViewModel(
         kuota = newKuota
     }
 
+    @ExperimentalSerializationApi
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
@@ -86,7 +97,8 @@ class CreateJadwalViewModel(
     }
 }
 
-enum class CreateJadwalResult {
+enum class JadwalCreationResult {
     Success,
-    Error
+    Error,
+    None
 }

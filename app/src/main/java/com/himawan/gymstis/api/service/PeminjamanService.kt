@@ -1,6 +1,6 @@
 package com.himawan.gymstis.api.service
 
-import com.himawan.gymstis.model.PeminjamanEditStatus
+import com.himawan.gymstis.model.PeminjamanStatusRequest
 import com.himawan.gymstis.model.PeminjamanRequest
 import com.himawan.gymstis.model.PeminjamanResponse
 import retrofit2.http.Body
@@ -18,5 +18,5 @@ interface PeminjamanService {
     suspend fun getAllPeminjaman(@Header("Authorization") token: String): List<PeminjamanResponse>
 
     @PATCH("/api/peminjaman/{id}/status")
-    suspend fun updateStatusPeminjaman(@Header("Authorization") token: String, @Path("id") id: Long, @Body peminjamanEditStatus: PeminjamanEditStatus): PeminjamanResponse
+    suspend fun updateStatusPeminjaman(@Header("Authorization") token: String, @Path("id") id: Long, @Body peminjamanStatusRequest: PeminjamanStatusRequest): PeminjamanResponse
 }

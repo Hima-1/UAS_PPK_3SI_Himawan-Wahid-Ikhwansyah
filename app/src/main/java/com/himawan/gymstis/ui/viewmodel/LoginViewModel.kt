@@ -13,6 +13,7 @@ import com.himawan.gymstis.repositories.UserPreferencesRepository
 import com.himawan.gymstis.model.AuthRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.serialization.ExperimentalSerializationApi
 import java.io.IOException
 
 class LoginViewModel(
@@ -30,7 +31,7 @@ class LoginViewModel(
         this.password = password
     }
 
-    private val _loginResult = MutableStateFlow<LoginResult?>(null)
+    private val _loginResult = MutableStateFlow(LoginResult.None)
     val loginResult = _loginResult.asStateFlow()
 
     suspend fun login() {
@@ -49,9 +50,10 @@ class LoginViewModel(
     }
 
     fun resetLoginResult() {
-        _loginResult.value = null
+        _loginResult.value = LoginResult.None
     }
 
+    @ExperimentalSerializationApi
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
@@ -69,5 +71,6 @@ class LoginViewModel(
 enum class LoginResult {
     Success,
     WrongEmailOrPassword,
-    NetworkError
+    NetworkError,
+    None
 }

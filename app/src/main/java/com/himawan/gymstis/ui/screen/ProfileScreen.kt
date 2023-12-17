@@ -1,5 +1,6 @@
 package com.himawan.gymstis.ui.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -29,15 +30,18 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.himawan.gymstis.ui.viewmodel.ProfileActionStatus
 import com.himawan.gymstis.ui.viewmodel.ProfileViewModel
 
 @Composable
@@ -47,6 +51,27 @@ fun ProfileScreen(
     profileViewModel: ProfileViewModel = viewModel(factory = ProfileViewModel.Factory)
 ) {
     val profile by profileViewModel.profile.collectAsState()
+
+    val context = LocalContext.current
+    val actionStatus by profileViewModel.actionStatus.collectAsState()
+
+    LaunchedEffect(actionStatus) {
+        when (actionStatus) {
+            ProfileActionStatus.Success -> {
+                navController.navigate("login") {
+                    popUpTo("login") { inclusive = true }
+                }
+                profileViewModel.resetActionStatus()
+            }
+            ProfileActionStatus.Error -> {
+                Toast.makeText(context, "Error performing action", Toast.LENGTH_SHORT).show()
+                profileViewModel.resetActionStatus()
+            }
+            ProfileActionStatus.None -> {
+                // do nothing
+            }
+        }
+    }
 
     Column(
         modifier = Modifier

@@ -11,7 +11,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 
 @ExperimentalSerializationApi
 class DefaultAppContainer : AppContainer {
-    private val baseUrl = "http://192.168.1.16:8080/"
+    private val baseUrl = "http://192.168.1.9:8080/"
     private val retrofit = RetrofitConfig(baseUrl).createRetrofit()
 
     private val userService: UserService by lazy {

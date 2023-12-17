@@ -12,7 +12,6 @@ import com.himawan.gymstis.repositories.UserState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -21,8 +20,6 @@ import kotlinx.serialization.ExperimentalSerializationApi
 class GymStisAppViewModel(
     private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
-
-    private val _uiState = MutableStateFlow(GymStisApplication())
 
     val userState: StateFlow<UserState> = userPreferencesRepository.user.map { user ->
         user

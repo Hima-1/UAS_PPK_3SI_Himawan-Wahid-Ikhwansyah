@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 import kotlinx.coroutines.launch
+import kotlinx.serialization.ExperimentalSerializationApi
 
 class EditPasswordViewModel(
     private val userPreferencesRepository: UserPreferencesRepository,
@@ -25,8 +26,8 @@ class EditPasswordViewModel(
     var newPassword by mutableStateOf("")
 
     private lateinit var token: String
-    private val _navigateToLogin = MutableStateFlow(false)
-    val navigateToProfile = _navigateToLogin.asStateFlow()
+    private val _passwordChangeResult = MutableStateFlow(PasswordChangeResult.None)
+    val passwordChangeResult = _passwordChangeResult.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -43,23 +44,26 @@ class EditPasswordViewModel(
     fun changePassword() {
         viewModelScope.launch {
             if (!validateInputs()) {
+                _passwordChangeResult.value = PasswordChangeResult.BadInput
                 return@launch
             }
             try {
                 userRepository.updatePassword(token, PasswordChangeRequest(newPassword))
                 userPreferencesRepository.clearUserData()
-                _navigateToLogin.value = true
+                _passwordChangeResult.value = PasswordChangeResult.Success
             } catch (e: Exception) {
                 e.printStackTrace()
+                _passwordChangeResult.value = PasswordChangeResult.Error
             }
         }
     }
 
 
-    fun resetNavigationTrigger() {
-        _navigateToLogin.value = false
+    fun resetPasswordChangeResult() {
+        _passwordChangeResult.value = PasswordChangeResult.None
     }
 
+    @ExperimentalSerializationApi
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
@@ -70,4 +74,11 @@ class EditPasswordViewModel(
             }
         }
     }
+}
+
+enum class PasswordChangeResult {
+    Success,
+    Error,
+    None,
+    BadInput
 }

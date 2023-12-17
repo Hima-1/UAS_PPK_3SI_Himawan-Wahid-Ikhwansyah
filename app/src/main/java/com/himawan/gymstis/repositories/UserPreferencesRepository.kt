@@ -27,7 +27,6 @@ class UserPreferencesRepository (
     val user: Flow<UserState> = dataStore.data
         .catch {
             if (it is IOException) {
-                Log.e(TAG, "Error reading preferences:", it)
                 emit(emptyPreferences())
             } else {
                 throw it

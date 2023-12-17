@@ -1,5 +1,6 @@
 package com.himawan.gymstis.ui.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -9,6 +10,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -25,15 +27,31 @@ fun LoginScreen(
     navController: NavHostController,
     loginViewModel: LoginViewModel = viewModel(factory = LoginViewModel.Factory)
 ){
+    val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     var passwordVisibility by remember { mutableStateOf(false) }
     val loginResult by loginViewModel.loginResult.collectAsState()
 
-    if (loginResult == LoginResult.Success) {
-        navController.navigate("jadwal"){
-            popUpTo("jadwal") { inclusive = true}
+    LaunchedEffect(loginResult) {
+        when (loginResult) {
+            LoginResult.Success -> {
+                navController.navigate("jadwal") {
+                    popUpTo("jadwal") { inclusive = true }
+                }
+                loginViewModel.resetLoginResult()
+            }
+            LoginResult.WrongEmailOrPassword -> {
+                Toast.makeText(context, "Wrong email or password", Toast.LENGTH_SHORT).show()
+                loginViewModel.resetLoginResult()
+            }
+            LoginResult.NetworkError -> {
+                Toast.makeText(context, "Network error", Toast.LENGTH_SHORT).show()
+                loginViewModel.resetLoginResult()
+            }
+            LoginResult.None -> {
+
+            }
         }
-        loginViewModel.resetLoginResult()
     }
     Column(
         modifier = Modifier

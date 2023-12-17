@@ -1,11 +1,13 @@
 package com.himawan.gymstis.ui.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -13,6 +15,7 @@ import androidx.navigation.NavController
 import com.himawan.gymstis.R
 import com.himawan.gymstis.ui.component.GenderSelection
 import com.himawan.gymstis.ui.viewmodel.EditProfileScreenViewModel
+import com.himawan.gymstis.ui.viewmodel.ProfileUpdateResult
 import kotlinx.coroutines.launch
 
 enum class Gender { MALE, FEMALE }
@@ -27,13 +30,30 @@ fun EditProfileScreen(
     val name by editProfileScreenViewModel.name.collectAsState()
     val email by editProfileScreenViewModel.email.collectAsState()
     val gender by editProfileScreenViewModel.gender.collectAsState()
-    val profileUpdated by editProfileScreenViewModel.profileUpdated.collectAsState()
+    val context = LocalContext.current
+    val profileUpdateResult by editProfileScreenViewModel.profileUpdateResult.collectAsState()
 
-    if (profileUpdated) {
-        navController.navigate("login"){
-            popUpTo("login") { inclusive = true}
+    LaunchedEffect(profileUpdateResult) {
+        when (profileUpdateResult) {
+            ProfileUpdateResult.Success -> {
+                Toast.makeText(context, "Profile updated successfully", Toast.LENGTH_SHORT).show()
+                navController.navigate("login") {
+                    popUpTo("login") { inclusive = true }
+                }
+                editProfileScreenViewModel.resetProfileUpdateResult()
+            }
+            ProfileUpdateResult.Error -> {
+                Toast.makeText(context, "Error updating profile", Toast.LENGTH_SHORT).show()
+                editProfileScreenViewModel.resetProfileUpdateResult()
+            }
+            ProfileUpdateResult.None -> {
+                // Do nothing
+            }
+            ProfileUpdateResult.BadInput -> {
+                Toast.makeText(context, "Please fill all fields", Toast.LENGTH_SHORT).show()
+                editProfileScreenViewModel.resetProfileUpdateResult()
+            }
         }
-        editProfileScreenViewModel.resetNavigationTrigger()
     }
 
     Column(

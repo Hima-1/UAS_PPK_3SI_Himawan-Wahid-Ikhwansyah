@@ -13,6 +13,7 @@ import com.himawan.gymstis.model.ProfileResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.serialization.ExperimentalSerializationApi
 
 class ProfileViewModel(
     private val userPreferencesRepository: UserPreferencesRepository,
@@ -22,6 +23,9 @@ class ProfileViewModel(
     private lateinit var token: String
     private val _profile = MutableStateFlow<ProfileResponse?>(null)
     val profile = _profile.asStateFlow()
+
+    private val _actionStatus = MutableStateFlow(ProfileActionStatus.None)
+    val actionStatus = _actionStatus.asStateFlow()
 
     init {
         fetchUserProfile()
@@ -50,17 +54,34 @@ class ProfileViewModel(
 
     fun logout() {
         viewModelScope.launch {
-            userPreferencesRepository.clearUserData()
+            try {
+                userPreferencesRepository.clearUserData()
+                _actionStatus.value = ProfileActionStatus.Success
+            } catch (e: Exception) {
+                e.printStackTrace()
+                _actionStatus.value = ProfileActionStatus.Error
+            }
         }
     }
 
     fun deleteAccount() {
         viewModelScope.launch {
-            userRepository.deleteProfile(token)
-            userPreferencesRepository.clearUserData()
+            try {
+                userRepository.deleteProfile(token)
+                userPreferencesRepository.clearUserData()
+                _actionStatus.value = ProfileActionStatus.Success
+            } catch (e: Exception) {
+                e.printStackTrace()
+                _actionStatus.value = ProfileActionStatus.Error
+            }
         }
     }
 
+    fun resetActionStatus() {
+        _actionStatus.value = ProfileActionStatus.None
+    }
+
+    @ExperimentalSerializationApi
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
@@ -71,4 +92,10 @@ class ProfileViewModel(
             }
         }
     }
+}
+
+enum class ProfileActionStatus {
+    Success,
+    Error,
+    None
 }

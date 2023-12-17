@@ -11,6 +11,7 @@ import com.himawan.gymstis.model.RegisterForm
 import com.himawan.gymstis.ui.screen.Gender
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.serialization.ExperimentalSerializationApi
 
 class RegisterViewModel(private val userRepository: UserRepository) : ViewModel() {
 
@@ -73,6 +74,7 @@ class RegisterViewModel(private val userRepository: UserRepository) : ViewModel(
         _registerResult.value = null
     }
 
+    @ExperimentalSerializationApi
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {

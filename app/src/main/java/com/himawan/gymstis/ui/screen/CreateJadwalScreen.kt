@@ -1,5 +1,6 @@
 package com.himawan.gymstis.ui.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
@@ -32,10 +34,13 @@ import com.himawan.gymstis.R
 import com.himawan.gymstis.ui.component.DatePickerButton
 import com.himawan.gymstis.ui.component.GenderSelection
 import com.himawan.gymstis.ui.viewmodel.CreateJadwalViewModel
+import com.himawan.gymstis.ui.viewmodel.JadwalCreationResult
+import kotlinx.serialization.ExperimentalSerializationApi
 import java.time.Instant
 
 import java.time.ZoneId
 
+@ExperimentalSerializationApi
 @ExperimentalMaterial3Api
 @Composable
 fun CreateJadwalScreen(
@@ -43,16 +48,27 @@ fun CreateJadwalScreen(
     createJadwalViewModel: CreateJadwalViewModel = viewModel(factory = CreateJadwalViewModel.Factory)
 ) {
     val context = LocalContext.current
-    val navigateToJadwal by createJadwalViewModel.navigateToJadwal.collectAsState()
+    val jadwalCreationResult by createJadwalViewModel.jadwalCreationResult.collectAsState()
 
-    if (navigateToJadwal) {
-        navController.navigate(Screen.Jadwal.route) {
-            popUpTo(Screen.Jadwal.route) { inclusive = true }
+    LaunchedEffect(jadwalCreationResult) {
+        when (jadwalCreationResult) {
+            JadwalCreationResult.Success -> {
+                Toast.makeText(context, "Jadwal created successfully", Toast.LENGTH_SHORT).show()
+                navController.navigate(Screen.Jadwal.route) {
+                    popUpTo(Screen.Jadwal.route) { inclusive = true }
+                }
+                createJadwalViewModel.resetCreationResult()
+            }
+            JadwalCreationResult.Error -> {
+                Toast.makeText(context, "Error creating Jadwal", Toast.LENGTH_SHORT).show()
+                createJadwalViewModel.resetCreationResult()
+            }
+            JadwalCreationResult.None -> {
+                // Do nothing
+            }
         }
-        createJadwalViewModel.resetNavigationTrigger()
     }
 
-    var selectedDateMillis by remember { mutableLongStateOf(System.currentTimeMillis()) }
     var gender by remember { mutableStateOf(createJadwalViewModel.gender) }
     var kuota by remember { mutableStateOf(createJadwalViewModel.kuota) }
 

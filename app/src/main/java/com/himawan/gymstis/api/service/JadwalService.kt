@@ -13,7 +13,7 @@ import retrofit2.http.Path
 
 interface JadwalService {
     @POST("/api/jadwal")
-    suspend fun createJadwal(@Header("Authorization") token: String, @Body jadwalForm: JadwalForm): JadwalResponse
+    suspend fun createJadwal(@Header("Authorization") token: String, @Body jadwalForm: JadwalForm): Response<Unit>
 
     @GET("/api/jadwal")
     suspend fun getAvailableJadwals(@Header("Authorization") token: String): List<JadwalResponse>
